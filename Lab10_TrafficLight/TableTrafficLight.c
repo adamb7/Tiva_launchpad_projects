@@ -5,35 +5,11 @@
 // Daniel Valvano, Jonathan Valvano
 // January 15, 2016
 
-// east/west red light connected to PB5
-// east/west yellow light connected to PB4
-// east/west green light connected to PB3
-// north/Sth facing red light connected to PB2
-// north/Sth facing yellow light connected to PB1
-// north/Sth facing green light connected to PB0
-// pedestrian detector connected to PE2 (1=pedestrian present)
-// north/Sth car detector connected to PE1 (1=car present)
-// east/west car detector connected to PE0 (1=car present)
-// "walk" light connected to PF3 (built-in green LED)
-// "don't walk" light connected to PF1 (built-in red LED)
-
 // ***** 1. Pre-processor Directives Section *****
 #include "TExaS.h"
 #include "tm4c123gh6pm.h"
 
 // ***** 2. Global Declarations Section *****
-//#define Start 0
-//#define rWest 1
-//#define goWest 2
-//#define hWest 3
-//#define rSth 4
-//#define goSth 5
-//#define hSth 6
-//#define Walk 7
-//#define Fl_off1 8
-//#define Fl_on1 9
-//#define Fl_off2 10
-//#define Fl_on2 11
 #define goWest 0
 #define hWest 1
 #define goSth 2
@@ -71,43 +47,6 @@ struct State{
 	unsigned long wait;
 };
 typedef struct State stateType;
-//stateType FSM[9]={
-//	{Start,		0x92,{Start,	Walk,		rSth,	Walk,		rWest,	Walk,		rSth,	Walk},		DELAY, 	&nothing},
-//	{Walk,		0x91,{Flash,	Walk,		Flash,	Flash,	Flash,	Flash,	Flash,	Flash}, DELAY,	&nothing},
-//	{Flash, 	0x91,{Start,	Start,	rSth,	rSth,	rWest,	rWest,	rSth,	rSth},		FLASH_DELAY, 	&flash},
-//	{rSth, 	0x8A,{goSth,	goSth,	goSth,	goSth,	goSth,	goSth,	goSth,	goSth},DELAY, 	&nothing},
-//	{goSth, 0x86,{hSth,	hSth,	goSth,	hSth,	hSth,	hSth,	hSth,	hSth},	DELAY, 	&nothing},
-//	{hSth, 	0x8A,{Start,	Start,	Start,	Start,	rWest,	Start,	rWest,	rWest},	DELAY, 	&nothing},
-//	{rWest,		0x52,{goWest,	goWest,	goWest,	goWest,	goWest,	goWest,	goWest,	goWest},DELAY,	&nothing},
-//	{goWest,	0x32,{hWest,	hWest,	hWest,	hWest,	goWest,	hWest,	hWest,	hWest},	DELAY,	&nothing},
-//	{hWest,		0x52,{Start,	Start,	rSth,	Start,	Start,	Start,	rSth,	Start},	DELAY,	&nothing},
-//};
-	//stateType FSM[13]={
-//		{Start, 0x224, 	{Start, 	rWest, 		rSth, 		rSth, 		Walk, 	Walk, 		Walk, 		Walk		}, 	DELAY},
-//		{rWest, 0x214, 	{Start, 	goWest, 	goWest, 	goWest, 	goWest, goWest, 	goWest, 	goWest	}, 	DELAY},
-//		{goWest,0x20C,	{hWest, 	goWest, 	hWest, 		hWest, 		hWest,	hWest,		hWest,		hWest		},	DELAY},
-//		{hWest, 0x214, 	{Start,		goWest,		Start,		Start,		Start,	Start,		Start,		hSth		},	DELAY},
-//		{rSth,	0x222,	{Start,		goSth,		goSth,		goSth,		goSth,	goSth,		goSth,		goSth		},	DELAY},
-//		{goSth, 0x224,	{hSth,		hSth,			goSth,		hSth,			hSth,		hSth,			hSth,			hSth		}, 	DELAY},
-//		{hSth,	0x222, 	{Start,		Start,		goSth,		rWest,		Start,	Start,		Start,		rWest		},	DELAY},
-//		{Walk,	0x824,	{Fl_off1,	Fl_off1,	Fl_off1,	Fl_off1,	Walk,		Fl_off1,	Fl_off1,	Fl_off1	},	DELAY},
-//		{Fl_off1,	0x024,{Fl_on1,	Fl_on1,		Fl_on1,		Fl_on1,		Fl_on1,	Fl_on1,		Fl_on1,		Fl_on1	}, FLASH_DELAY},
-//		{Fl_on1,	0x824,{Fl_off2,	Fl_off2,	Fl_off2,	Fl_off2,	Fl_off2,Fl_off2,	Fl_off2,	Fl_off2	}, FLASH_DELAY},
-//		{Fl_off2,	0x024,{Fl_on2,	Fl_on2,		Fl_on2,		Fl_on2,		Fl_on2,	Fl_on2,		Fl_on2,		Fl_on2	}, FLASH_DELAY},
-//		{Fl_on2,	0x824,{lofasz,	lofasz,		lofasz,		lofasz,		lofasz,	lofasz,		lofasz,		lofasz	}, FLASH_DELAY},
-//		{lofasz,	0x224,{Start,		Start,		rSth,			rSth,			Start,	rWest,		rSth,			goWest	}, DELAY}
-//	};
-//stateType FSM[9]={
-//	{goWest, 	0x20C,	{hWest, 	goWest, 	hWest, 		hWest, 		hWest,	hWest,		hWest,		hWest			}, 	DELAY},
-//	{hWest,		0x214,	{Walk,		goWest,		goSth,		goSth,		Walk,		Walk,			Walk,			Walk			},	DELAY},
-//	{goSth,		0x221,	{hSth,		hSth,			goSth,		hSth,			hSth,		hSth,			hSth,			hSth			},	DELAY},
-//	{hSth,		0x222,	{Walk,		goWest,		goSth,		goWest,		Walk,		Walk,			Walk,			goWest		},	DELAY},
-//	{Walk,		0x824,	{Fl_off1,	Fl_off1,	Fl_off1,	Fl_off1,	Walk,		Fl_off1,	Fl_off1,	Fl_off1		},	DELAY},
-//	{noWalk,	0x224,	{offWalk,	offWalk,	offWalk,	offWalk,	offWalk,offWalk,	offWalk,	offWalk	}, FLASH_DELAY},
-//	{offWalk,	0x024,	{Fl_on2,	Fl_on2,		Fl_on2,		Fl_on2,		Fl_on2,	Fl_on2,		Fl_on2,		Fl_on2	}, FLASH_DELAY},
-//	{Fl_on2,	0x224,	{Fl_off2,	Fl_off2,	Fl_off2,	Fl_off2,	Fl_off2,Fl_off2,	Fl_off2,	Fl_off2	}, FLASH_DELAY},
-//	{Fl_off2,	0x024,	{goWest,	goWest,		goSth,		goSth,		Walk,		goWest,		goSth,		goSth		}, DELAY},
-//};
 stateType FSM[9]={
 	{goWest, 	0x20C,	{goWest, 	goWest, 	hWest, 		hWest, 		hWest,	hWest,		hWest,		hWest			}, 	DELAY},
 	{hWest,		0x214,	{hWest,		goWest,		goSth,		goSth,		Walk,		Walk,			Walk,			Walk			},	DELAY},
@@ -189,8 +128,7 @@ void PortB_Init(void){ volatile unsigned long delay;
   GPIO_PORTB_PCTL_R = 0x00000000;   // 4) PCTL GPIO on PF4-0
   GPIO_PORTB_DIR_R = 0x3F;          // 5) PF4,PF0 in, PF3-1 out
   GPIO_PORTB_AFSEL_R = 0x00;        // 6) disable alt funct on PF7-0
-  //GPIO_PORTB_PUR_R = 0x11;          // enable pull-up on PF0 and PF4
-	GPIO_PORTB_PUR_R = 0x00;
+  GPIO_PORTB_PUR_R = 0x00;
   GPIO_PORTB_DEN_R = 0xFF;          // 7) enable digital I/O on PF4-0
 }
 void PortE_Init(void){ volatile unsigned long delay;
@@ -203,7 +141,6 @@ void PortE_Init(void){ volatile unsigned long delay;
   GPIO_PORTE_PCTL_R = 0x00000000;   // 4) PCTL GPIO on PF4-0
   GPIO_PORTE_DIR_R = 0x00;          // 5) PF4,PF0 in, PF3-1 out
   GPIO_PORTE_AFSEL_R = 0x00;        // 6) disable alt funct on PF7-0
-  //GPIO_PORTE_PUR_R = 0x11;          // enable pull-up on PF0 and PF4
-	GPIO_PORTE_PUR_R = 0x10;
+  GPIO_PORTE_PUR_R = 0x10;
   GPIO_PORTE_DEN_R = 0x1F;          // 7) enable digital I/O on PF4-0
 }
