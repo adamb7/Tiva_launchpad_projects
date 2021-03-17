@@ -21,13 +21,13 @@ void ADC_Init(void){
 	ADC0_EMUX_R					&= 	~0xF000; //processor trigger will start SS3
 	ADC0_SSMUX3_R				= 	0x1;	//sample comes from Ain1
 	ADC0_SSCTL3_R 			= 	0x6;	//enable interrupt generation(assert INR0 bit at the end of this sample conversion), and end of sequence bit
-	ADC0_IM_R 					=		0x00000008;	//set IR mask
+	//ADC0_IM_R 					=		0x00000008;	//set IR mask
 	ADC0_ACTSS_R				|= 	0x08;	//start SS3
 }
 unsigned long ADC_In(void){
 	unsigned long data;
 	ADC0_PSSI_R |= 0x8;
-	while(ADC0_RIS_R & 0x8){};
+	while((ADC0_RIS_R & 0x8)==0){};
 	data = (ADC0_SSFIFO3_R & 0xFFF);
 	ADC0_ISC_R 	|= 0x8;
 	return data;
