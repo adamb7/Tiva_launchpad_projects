@@ -463,20 +463,28 @@ void Enemies_Init(void){int i;
 		Enemies[i].life=1;
 	}
 }
-	
+
+unsigned short Animate=0x1;
 void Enemies_Move(void){int i;
 	for(i=0; i<5;i++){
-		if(Enemies[i].x == i*16 +4) 
-			Enemies[i].x -=2;
-		else
+		if(Animate == 0x01){
 			Enemies[i].x +=2;
-		if(Enemies[i].y == i*16 +4)
-			Enemies[i].y -=2;
-		else
-			Enemies[i].y -=2;
+		}
+		else{
+			Enemies[i].x -=2;
+		}
+//		if(Enemies[i].x == i*16 +4) 
+//			Enemies[i].x -=2;
+//		else
+//			Enemies[i].x +=2;
+//		if(Enemies[i].y == i*16 +4)
+//			Enemies[i].y -=2;
+//		else
+//			Enemies[i].y -=2;
 	}
+	Animate ^= 1UL;
 }
-unsigned long FrameCount=0;
+unsigned short FrameCount=0;
 void Enemies_Draw(void){int i;
 	for(i=0;i<5;i++){
 		Nokia5110_PrintBMP(Enemies[i].x,Enemies[i].y,Enemies[i].image[FrameCount],0);
