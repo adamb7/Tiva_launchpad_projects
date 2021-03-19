@@ -351,7 +351,7 @@ int main(void){
 	Nokia5110_DisplayBuffer();      // draw buffer
 	Nokia5110_Clear();
 
-	//GameSound_Init();
+	GameSound_Init();
 	ADC_Init();
 	Semaphore=0;
 	Systick_Init(2666667); //30Hz
@@ -372,7 +372,7 @@ int main(void){
   while(1){
 		while(Semaphore==0){}
 		Update_LCD();
-		if(Player.life == 0) break;
+		//if(Player.life == 0) break;
   }
 	Nokia5110_Clear();
   Nokia5110_SetCursor(1, 1);
@@ -434,13 +434,11 @@ void SysTick_Handler(void){
 	data = Switch_Read();
 	if(data & 0x1){
 		//TODO shoot missile animation
-		Player.life = 0;
-		//GameSound_Play(227); //play shooting sound
+		GameSound_Play(227); //play shooting sound
 	}
 	if(data & 0x2){
 		//TODO shoot special missile animation
-		//GameSound_Play(227); //play shooting sound
-		Player.life=0;
+		GameSound_Play(227); //play shooting sound
 	}
 	//read ADC, move player
 	data = ADC_In();
@@ -473,14 +471,6 @@ void Enemies_Move(void){int i;
 		else{
 			Enemies[i].x -=2;
 		}
-//		if(Enemies[i].x == i*16 +4) 
-//			Enemies[i].x -=2;
-//		else
-//			Enemies[i].x +=2;
-//		if(Enemies[i].y == i*16 +4)
-//			Enemies[i].y -=2;
-//		else
-//			Enemies[i].y -=2;
 	}
 	Animate ^= 1UL;
 }

@@ -14,6 +14,7 @@ const unsigned long Sinewave_Data[] = {0x1,0x1,0x2,0x2,0x3,0x4,0x5,0x7,0x8,0x9,0
 unsigned long TimerCount;
 //unsigned long Semaphore;
 unsigned long SampleCount = 0;
+unsigned long debug;
 
 void DACInit(){
 	unsigned long delay;
@@ -24,9 +25,11 @@ void DACInit(){
 	GPIO_PORTB_AFSEL_R&=~0x3F;
 	GPIO_PORTB_AMSEL_R&=~0x3F;
 	GPIO_PORTB_DIR_R	|=0x3F;
+	GPIO_PORTB_PCTL_R	&=	~0xFFFF;//set pins as gpio
 }
 void DACOut(unsigned long counter){
-	GPIO_PORTB_DATA_R = Sinewave_Data[counter & 0xF];
+	debug = counter;
+	GPIO_PORTB_DATA_R = Sinewave_Data[counter];
 }
 void SetTone(unsigned long sound){
 	//for different sounds
@@ -35,8 +38,9 @@ void SetTone(unsigned long sound){
 	TIMER2_CTL_R =	0x00000001;
 }
 void GameSound_Play(unsigned long sound){
-	SampleCount = ARRAY_SIZE;
-	SetTone(sound);
+	//SetTone(sound);
+	//SampleCount = ARRAY_SIZE*8;
+	SampleCount = 11000;
 }
 // You can use this timer only if you learn how it works
 void Timer2_Init(unsigned long period){ 
@@ -58,12 +62,12 @@ void Timer2_Init(unsigned long period){
   NVIC_EN0_R = 1<<23;           // 9) enable IRQ 23 in NVIC
   TIMER2_CTL_R = 0x00000001;    // 10) enable timer2A
 }
-void Timer2A_Handler(void){ 
+void Timer2A_Handler(void){
   TIMER2_ICR_R = 0x00000001;   // acknowledge timer2A timeout
   TimerCount++;
   //Semaphore = 1; // trigger
-	if(SampleCount){
-		DACOut(TimerCount);
+	if(SampleCount>0){
+		DACOut(TimerCount&0x1F); //samples[0.....31]
 		SampleCount--;
 	}
 	else{
