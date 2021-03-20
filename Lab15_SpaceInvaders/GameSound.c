@@ -14,28 +14,27 @@ const unsigned long Sinewave_Data[] = {0x1,0x1,0x2,0x2,0x3,0x4,0x5,0x7,0x8,0x9,0
 unsigned long TimerCount;
 //unsigned long Semaphore;
 unsigned long SampleCount = 0;
-unsigned long debug;
 
 void DACInit(){
 	unsigned long delay;
-	SYSCTL_RCGC2_R		|=	0x3;
+	SYSCTL_RCGC2_R		|= 0x3;
 	SYSCTL_RCGCGPIO_R |= 0x3;
 	delay=SYSCTL_RCGCGPIO_R;
 	GPIO_PORTB_DEN_R	|=0x3F;
-	GPIO_PORTB_AFSEL_R&=~0x3F;
-	GPIO_PORTB_AMSEL_R&=~0x3F;
+	GPIO_PORTB_AFSEL_R &=0x00;
+	//GPIO_PORTB_AMSEL_R&=~0x3F;
 	GPIO_PORTB_DIR_R	|=0x3F;
-	GPIO_PORTB_PCTL_R	&=	~0xFFFF;//set pins as gpio
+	//GPIO_PORTB_PCTL_R	&=	~0xFFFF;//set pins as gpio
+	GPIO_PORTB_DR8R_R |= 	0xF;
 }
 void DACOut(unsigned long counter){
-	debug = counter;
-	GPIO_PORTB_DATA_R = Sinewave_Data[counter];
+	GPIO_PORTB_DATA_R = (Sinewave_Data[counter]&0xF);
 }
 void SetTone(unsigned long sound){
 	//for different sounds
 	TIMER2_CTL_R = 0x00000000;
 	TIMER2_TAILR_R = sound-1; //set reload reg
-	TIMER2_CTL_R =	0x00000001;
+	TIMER2_CTL_R = 0x00000001;
 }
 void GameSound_Play(unsigned long sound){
 	//SetTone(sound);

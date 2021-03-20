@@ -82,6 +82,10 @@ void EnableInterrupts(void);  // Enable interrupts
 void Delay100ms(unsigned long count); // time delay in 0.1 seconds
 //unsigned long TimerCount;
 unsigned long Semaphore;
+unsigned long MissileAnim;
+unsigned long MissileXpos;
+unsigned long MissileYpos;
+unsigned long debug;
 
 
 // *************************** Images ***************************
@@ -342,6 +346,9 @@ void Player_Move(unsigned long);
 void Player_Draw(void);
 void Update_LCD(void);
 void Systick_Init(unsigned long);
+void Missile_Init(void);
+void Missile_Move(void);
+void Missile_Draw(void);
 
 int main(void){
   TExaS_Init(SSI0_Real_Nokia5110_Scope);  // set system clock to 80 MHz
@@ -357,6 +364,7 @@ int main(void){
 	Systick_Init(2666667); //30Hz
 	Player_Init();
 	Enemies_Init();
+	Missile_Init();
 //  Nokia5110_PrintBMP(32, 47, PlayerShip0, 0); // player ship middle bottom
 //  Nokia5110_PrintBMP(33, 47 - PLAYERH, Bunker0, 0);
 //  Nokia5110_PrintBMP(0, ENEMY10H - 1, SmallEnemy10PointA, 0);
@@ -384,36 +392,6 @@ int main(void){
   Nokia5110_SetCursor(2, 4);
   Nokia5110_OutUDec(1234);
 }
-
-
-
-//// You can use this timer only if you learn how it works
-//void Timer2_Init(unsigned long period){ 
-//  unsigned long volatile delay;
-//  SYSCTL_RCGCTIMER_R |= 0x04;   // 0) activate timer2
-//  delay = SYSCTL_RCGCTIMER_R;
-//  TimerCount = 0;
-//  Semaphore = 0;
-//  TIMER2_CTL_R = 0x00000000;    // 1) disable timer2A during setup
-//  TIMER2_CFG_R = 0x00000000;    // 2) configure for 32-bit mode
-//  TIMER2_TAMR_R = 0x00000002;   // 3) configure for periodic mode, default down-count settings
-//  TIMER2_TAILR_R = period-1;    // 4) reload value
-//  TIMER2_TAPR_R = 0;            // 5) bus clock resolution
-//  TIMER2_ICR_R = 0x00000001;    // 6) clear timer2A timeout flag
-//  TIMER2_IMR_R = 0x00000001;    // 7) arm timeout interrupt
-//  NVIC_PRI5_R = (NVIC_PRI5_R&0x00FFFFFF)|0x80000000; // 8) priority 4
-//// interrupts enabled in the main program after all devices initialized
-//// vector number 39, interrupt number 23
-//  NVIC_EN0_R = 1<<23;           // 9) enable IRQ 23 in NVIC
-//  TIMER2_CTL_R = 0x00000001;    // 10) enable timer2A
-//}
-//void Timer2A_Handler(void){ 
-//  TIMER2_ICR_R = 0x00000001;   // acknowledge timer2A timeout
-//  TimerCount++;
-//  Semaphore = 1; // trigger
-//	//todo if(trigger) playsound(); else output: 0
-//	GameSound_Play(0,TimerCount);
-//}
 void Delay100ms(unsigned long count){unsigned long volatile time;
   while(count>0){
     time = 727240;  // 0.1sec at 80 MHz
@@ -430,24 +408,38 @@ void Systick_Init(unsigned long period){
 	NVIC_ST_CTRL_R |= 0x01;
 }
 void SysTick_Handler(void){
-	unsigned long data;
-	data = Switch_Read();
-	if(data & 0x1){
-		//TODO shoot missile animation
+	unsigned long Data,ShipPos;
+	Data = Switch_Read();
+	//read ADC
+	ShipPos = ADC_In()/62; //84 pixel, player width:18, 12bit ADC => [0 ; 84-18]: 66-0=66 4096/66 = 62.0606
+	if((Data & 0x1)&& (MissileAnim==0)){
+		//start shoot missile animation
+		MissileXpos=ShipPos+8;
+		MissileYpos=41;
+		MissileAnim=1;
 		GameSound_Play(227); //play shooting sound
 	}
-	if(data & 0x2){
+	if((Data & 0x2)&& (MissileAnim==0)){
 		//TODO shoot special missile animation
+		MissileXpos=ShipPos+8;
+		MissileYpos=41;
+		MissileAnim=1;
 		GameSound_Play(227); //play shooting sound
 	}
-	//read ADC, move player
-	data = ADC_In();
-	Player_Move(data);
+	//move player missile
+	if(MissileAnim>0){
+		Missile_Move();
+	}
+	//move player
+	Player_Move(ShipPos);
 	//move sprites
 	Enemies_Move();
 	//draw to RAM buffer
 	Nokia5110_ClearBuffer();
 	Player_Draw();
+	if(MissileAnim>0){
+		Missile_Draw();
+	}
 	Enemies_Draw();
 	Semaphore=1;
 }
@@ -477,12 +469,13 @@ void Enemies_Move(void){int i;
 unsigned short FrameCount=0;
 void Enemies_Draw(void){int i;
 	for(i=0;i<5;i++){
-		Nokia5110_PrintBMP(Enemies[i].x,Enemies[i].y,Enemies[i].image[FrameCount],0);
+		if(Enemies[i].life==1){
+			Nokia5110_PrintBMP(Enemies[i].x,Enemies[i].y,Enemies[i].image[FrameCount],0);
+		}
 	}
 	FrameCount = (FrameCount+1)&0x01;
 }
 void Player_Init(void){
-	//Nokia5110_PrintBMP(32, 47, PlayerShip0, 0); // player ship middle bottom
 	Player.x=32;
 	Player.y=47;
 	Player.image[0]=PlayerShip0;
@@ -491,10 +484,36 @@ void Player_Init(void){
 	//Nokia5110_PrintBMP(33, 47 - PLAYERH, Bunker0, 0);
 }
 void Player_Move(unsigned long data){
-	Player.x= (data/62); //84 pixel, player width:18, 12bit ADC => [0 ; 84-18]: 66-0=66 4096/66 = 62.0606
+	Player.x= data; //84 pixel, player width:18, 12bit ADC => [0 ; 84-18]: 66-0=66 4096/66 = 62.0606
 }
 void Player_Draw(void){
 	Nokia5110_PrintBMP(Player.x,Player.y,Player.image[0],0);
+}
+void Missile_Init(void){
+	MissileAnim = 0;
+}
+void Missile_Move(void){
+	if(MissileYpos == 19){
+		MissileAnim=0;
+	}
+	else{
+		MissileYpos--;
+	}
+}
+void Missile_Draw(void){
+	switch (MissileYpos){
+		case 41: Nokia5110_PrintBMP(MissileXpos,MissileYpos,Missile2,0);break;
+		case 19: Nokia5110_PrintBMP(MissileXpos,MissileYpos,Missile1,0);
+			switch(MissileXpos>>4){
+				case 1: Enemies[1].life=0;break;
+				case 2:	Enemies[2].life=0;break;
+				case 3:	Enemies[3].life=0;break;
+				case 4:	Enemies[4].life=0;break;
+				default:Enemies[0].life=0;
+			};
+			break;
+		default: Nokia5110_PrintBMP(MissileXpos,MissileYpos,Missile0,0);
+	}
 }
 void Update_LCD(void){
 	Nokia5110_DisplayBuffer();
