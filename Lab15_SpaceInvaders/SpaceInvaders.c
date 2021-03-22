@@ -75,6 +75,7 @@
 #include "Switch.h"
 #include "GameSound.h"
 #include "ADC.h"
+#include "stdlib.h"
 
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
@@ -85,6 +86,7 @@ unsigned long Semaphore;
 unsigned long MissileAnim;
 unsigned long MissileXpos;
 unsigned long MissileYpos;
+unsigned long AllDead;
 unsigned long debug;
 
 
@@ -332,7 +334,7 @@ const unsigned char Laser1[] = {
 struct State{
 	unsigned long x;
 	unsigned long y;
-	const unsigned char *image[2];
+	void *image;
 	long life;
 };
 typedef struct State Styp;
@@ -349,48 +351,46 @@ void Systick_Init(unsigned long);
 void Missile_Init(void);
 void Missile_Move(void);
 void Missile_Draw(void);
+void Reset_Game(void);
 
 int main(void){
   TExaS_Init(SSI0_Real_Nokia5110_Scope);  // set system clock to 80 MHz
   Random_Init(1);
-  Nokia5110_Init();
-  Nokia5110_ClearBuffer();
-	Nokia5110_DisplayBuffer();      // draw buffer
-	Nokia5110_Clear();
-
+	Nokia5110_Init();
 	GameSound_Init();
 	ADC_Init();
 	Semaphore=0;
 	Systick_Init(2666667); //30Hz
-	Player_Init();
-	Enemies_Init();
-	Missile_Init();
-//  Nokia5110_PrintBMP(32, 47, PlayerShip0, 0); // player ship middle bottom
+	
+	Reset_Game();
 //  Nokia5110_PrintBMP(33, 47 - PLAYERH, Bunker0, 0);
-//  Nokia5110_PrintBMP(0, ENEMY10H - 1, SmallEnemy10PointA, 0);
-//  Nokia5110_PrintBMP(16, ENEMY10H - 1, SmallEnemy20PointA, 0);
-//  Nokia5110_PrintBMP(32, ENEMY10H - 1, SmallEnemy20PointA, 0);
-//  Nokia5110_PrintBMP(48, ENEMY10H - 1, SmallEnemy30PointA, 0);
-//  Nokia5110_PrintBMP(64, ENEMY10H - 1, SmallEnemy30PointA, 0);
-//  Nokia5110_DisplayBuffer();     // draw buffer
-	Player_Draw();
-	Enemies_Draw();
-	Update_LCD();
-//  Delay100ms(50);              // delay 5 sec at 50 MHz
   while(1){
-		while(Semaphore==0){}
-		Update_LCD();
-		//if(Player.life == 0) break;
-  }
-	Nokia5110_Clear();
-  Nokia5110_SetCursor(1, 1);
-  Nokia5110_OutString("GAME OVER");
-  Nokia5110_SetCursor(1, 2);
-  Nokia5110_OutString("Nice try,");
-  Nokia5110_SetCursor(1, 3);
-  Nokia5110_OutString("Earthling!");
-  Nokia5110_SetCursor(2, 4);
-  Nokia5110_OutUDec(1234);
+		while(1){
+			while(Semaphore==0){}
+			Update_LCD();
+			if((Player.life == 0) || (AllDead==1)) break; 
+		}	
+		if(Player.life==0){
+			Nokia5110_Clear();
+			Nokia5110_SetCursor(1, 1);
+			Nokia5110_OutString("GAME OVER");
+			Nokia5110_SetCursor(1, 2);
+			Nokia5110_OutString("Nice try,");
+			Nokia5110_SetCursor(1, 3);
+			Nokia5110_OutString("Earthling!");
+			Nokia5110_SetCursor(2, 4);
+		}
+		else{
+			Nokia5110_SetCursor(1,1);
+			Nokia5110_OutString("Well done!");
+			Nokia5110_SetCursor(1,2);
+			Nokia5110_OutString("You won.");
+		}
+		while((Switch_Read() & 0x3) == 0){}
+		Nokia5110_Clear();
+		Delay100ms(5);
+		Reset_Game();
+	}
 }
 void Delay100ms(unsigned long count){unsigned long volatile time;
   while(count>0){
@@ -443,43 +443,54 @@ void SysTick_Handler(void){
 	Enemies_Draw();
 	Semaphore=1;
 }
-
-void Enemies_Init(void){int i;
+unsigned short AnimateEnemies;
+void Enemies_Init(void){int i; void* set;
 	for(i=0; i<5;i++){
 		Enemies[i].x=(i*16);
 		Enemies[i].y=ENEMY10H-1;
-		Enemies[i].image[0]=SmallEnemy10PointA;
-		Enemies[i].image[1]=SmallEnemy10PointB;
+		Enemies[i].image=calloc(2,215*sizeof(unsigned char)); 
+		Enemies[i].image=&SmallEnemy10PointA;
+		set=(&Enemies[i].image)+215;
+		set=&SmallEnemy10PointB;
 		Enemies[i].life=1;
 	}
+	AllDead=0;
+	AnimateEnemies=1;
 }
-
-unsigned short Animate=0x1;
 void Enemies_Move(void){int i;
 	for(i=0; i<5;i++){
-		if(Animate == 0x01){
-			Enemies[i].x +=2;
-		}
-		else{
-			Enemies[i].x -=2;
+		if(Enemies[i].life==1){
+			if(AnimateEnemies == 1){
+				Enemies[i].x +=2;
+			}
+			else{
+				Enemies[i].x -=2;
+			}
 		}
 	}
-	Animate ^= 1UL;
+	AnimateEnemies ^= 1UL;
 }
 unsigned short FrameCount=0;
-void Enemies_Draw(void){int i;
+unsigned short toggle=0;
+void Enemies_Draw(void){int i; unsigned short dead=0; 
 	for(i=0;i<5;i++){
 		if(Enemies[i].life==1){
-			Nokia5110_PrintBMP(Enemies[i].x,Enemies[i].y,Enemies[i].image[FrameCount],0);
+			Nokia5110_PrintBMP(Enemies[i].x,Enemies[i].y,(const unsigned char*)(Enemies[i].image+FrameCount),0);
+		}
+		else{
+			dead++;
 		}
 	}
-	FrameCount = (FrameCount+1)&0x01;
+	if(dead==5) AllDead=1;
+	//FrameCount = (FrameCount+1)&0x01;
+	toggle^=1UL;
+	FrameCount = (FrameCount|215)+toggle;
 }
 void Player_Init(void){
 	Player.x=32;
 	Player.y=47;
-	Player.image[0]=PlayerShip0;
-	Player.image[1]=PlayerShip0;
+	Player.image=&PlayerShip0;
+	//Player.image[1]=PlayerShip0;
 	Player.life=1;
 	//Nokia5110_PrintBMP(33, 47 - PLAYERH, Bunker0, 0);
 }
@@ -487,7 +498,8 @@ void Player_Move(unsigned long data){
 	Player.x= data; //84 pixel, player width:18, 12bit ADC => [0 ; 84-18]: 66-0=66 4096/66 = 62.0606
 }
 void Player_Draw(void){
-	Nokia5110_PrintBMP(Player.x,Player.y,Player.image[0],0);
+	//Nokia5110_PrintBMP(Player.x,Player.y,Player.image[0],0);
+	Nokia5110_PrintBMP(Player.x,Player.y,(const unsigned char*)Player.image,0);
 }
 void Missile_Init(void){
 	MissileAnim = 0;
@@ -518,4 +530,15 @@ void Missile_Draw(void){
 void Update_LCD(void){
 	Nokia5110_DisplayBuffer();
 	Semaphore=0;
+}
+void Reset_Game(void){
+	Nokia5110_ClearBuffer();
+	Nokia5110_DisplayBuffer();      // draw buffer
+	Nokia5110_Clear();
+	Player_Init();
+	Enemies_Init();
+	Missile_Init();
+	Player_Draw();
+	Enemies_Draw();
+	Update_LCD();
 }
