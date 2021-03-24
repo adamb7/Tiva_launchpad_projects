@@ -7,11 +7,29 @@ C:\Keil\Labware\Lab15_SpaceInvaders\SpaceInvaders.uvproj
 Project File Date:  03/18/2021
 
 <h2>Output:</h2>
-Rebuild target 'SpaceInvaders'
-assembling startup.s...
-compiling Nokia5110.c...
-assembling random.s...
+Build target 'SpaceInvaders'
 compiling SpaceInvaders.c...
+linking...
+Program Size: Code=5236 RO-data=5412 RW-data=100 ZI-data=1796  
+".\SpaceInvaders.axf" - 0 Error(s), 0 Warning(s).
+ Switch.c...
+compiling GameSound.c...
+GameSound.c(19): warning:  #550-D: variable "delay" was set but never used
+        unsigned long delay;
+GameSound.c: 1 warning, 0 errors
+linking...
+Program Size: Code=5152 RO-data=5412 RW-data=100 ZI-data=1796  
+".\SpaceInvaders.axf" - 0 Error(s), 1 Warning(s).
+ng delay;
+GameSound.c: 1 warning, 0 errors
+linking...
+Program Size: Code=5032 RO-data=5412 RW-data=100 ZI-data=1780  
+".\SpaceInvaders.axf" - 0 Error(s), 2 Warning(s).
+lared but never referenced
+  void Enemies_Init(void){int i; void* set;
+SpaceInvaders.c(482): error:  #167: argument of type "unsigned char" is incompatible with parameter of type "const unsigned char *"
+                                Nokia5110_PrintBMP(Enemies[i].x,Enemies[i].y,*EnemyAnim[1],0);
+SpaceInvaders.c: 1 warning, 3 errors
 compiling TExaS.c...
 compiling ADC.c...
 compiling Switch.c...
@@ -19,14 +37,5 @@ compiling GameSound.c...
 GameSound.c(19): warning:  #550-D: variable "delay" was set but never used
         unsigned long delay;
 GameSound.c: 1 warning, 0 errors
-linking...
-Program Size: Code=5088 RO-data=5412 RW-data=100 ZI-data=1804  
-".\SpaceInvaders.axf" - 0 Error(s), 1 Warning(s).
-</pre>
-</body>
-</html>
-4968 RO-data=5412 RW-data=96 ZI-data=1800  
-".\SpaceInvaders.axf" - 0 Error(s), 2 Warning(s).
-arning, 2 errors
-".\SpaceInvaders.axf" - 2 Error(s), 1 Warning(s).
+".\SpaceInvaders.axf" - 3 Error(s), 2 Warning(s).
 Target not created

@@ -334,12 +334,13 @@ const unsigned char Laser1[] = {
 struct State{
 	unsigned long x;
 	unsigned long y;
-	void *image;
+	const unsigned char *image;
 	long life;
 };
 typedef struct State Styp;
 Styp Enemies[5];
 Styp Player;
+Styp Bunker;
 void Enemies_Init(void);
 void Enemies_Move(void);
 void Enemies_Draw(void);
@@ -351,6 +352,8 @@ void Systick_Init(unsigned long);
 void Missile_Init(void);
 void Missile_Move(void);
 void Missile_Draw(void);
+void Bunker_Init(void);
+void Bunker_Draw(void);
 void Reset_Game(void);
 
 int main(void){
@@ -441,17 +444,15 @@ void SysTick_Handler(void){
 		Missile_Draw();
 	}
 	Enemies_Draw();
+	Bunker_Draw();
 	Semaphore=1;
 }
 unsigned short AnimateEnemies;
-void Enemies_Init(void){int i; void* set;
+void Enemies_Init(void){int i;
 	for(i=0; i<5;i++){
 		Enemies[i].x=(i*16);
 		Enemies[i].y=ENEMY10H-1;
-		Enemies[i].image=calloc(2,215*sizeof(unsigned char)); 
-		Enemies[i].image=&SmallEnemy10PointA;
-		set=(&Enemies[i].image)+215;
-		set=&SmallEnemy10PointB;
+		Enemies[i].image=SmallEnemy10PointA;
 		Enemies[i].life=1;
 	}
 	AllDead=0;
@@ -471,35 +472,35 @@ void Enemies_Move(void){int i;
 	AnimateEnemies ^= 1UL;
 }
 unsigned short FrameCount=0;
-unsigned short toggle=0;
 void Enemies_Draw(void){int i; unsigned short dead=0; 
 	for(i=0;i<5;i++){
 		if(Enemies[i].life==1){
-			Nokia5110_PrintBMP(Enemies[i].x,Enemies[i].y,(const unsigned char*)(Enemies[i].image+FrameCount),0);
+			if(FrameCount == 0){
+				Nokia5110_PrintBMP(Enemies[i].x,Enemies[i].y,SmallEnemy10PointA,0);
+			}
+			else{
+				Nokia5110_PrintBMP(Enemies[i].x,Enemies[i].y,SmallEnemy10PointB,0);
+			}
 		}
 		else{
 			dead++;
 		}
 	}
 	if(dead==5) AllDead=1;
-	//FrameCount = (FrameCount+1)&0x01;
-	toggle^=1UL;
-	FrameCount = (FrameCount|215)+toggle;
+	FrameCount = (FrameCount+1)&0x01;
 }
 void Player_Init(void){
 	Player.x=32;
 	Player.y=47;
-	Player.image=&PlayerShip0;
-	//Player.image[1]=PlayerShip0;
+	Player.image=PlayerShip0;
 	Player.life=1;
-	//Nokia5110_PrintBMP(33, 47 - PLAYERH, Bunker0, 0);
+	Nokia5110_PrintBMP(33, 47 - PLAYERH, Bunker0, 0);
 }
 void Player_Move(unsigned long data){
 	Player.x= data; //84 pixel, player width:18, 12bit ADC => [0 ; 84-18]: 66-0=66 4096/66 = 62.0606
 }
 void Player_Draw(void){
-	//Nokia5110_PrintBMP(Player.x,Player.y,Player.image[0],0);
-	Nokia5110_PrintBMP(Player.x,Player.y,(const unsigned char*)Player.image,0);
+	Nokia5110_PrintBMP(Player.x,Player.y,Player.image,0);
 }
 void Missile_Init(void){
 	MissileAnim = 0;
@@ -509,6 +510,7 @@ void Missile_Move(void){
 		MissileAnim=0;
 	}
 	else{
+		MissileYpos--;
 		MissileYpos--;
 	}
 }
@@ -527,6 +529,21 @@ void Missile_Draw(void){
 		default: Nokia5110_PrintBMP(MissileXpos,MissileYpos,Missile0,0);
 	}
 }
+void Bunker_Init(void){
+	Bunker.x=33;
+	Bunker.y=47 - PLAYERH;
+	Bunker.image=Bunker0;
+	Bunker.life=3;
+	Nokia5110_PrintBMP(Bunker.x,Bunker.y,Bunker0,0);
+}
+void Bunker_Draw(void){
+	switch(Bunker.life){
+		case 3:	Nokia5110_PrintBMP(Bunker.x,Bunker.y,Bunker0,0);break;
+		case 2:	Nokia5110_PrintBMP(Bunker.x,Bunker.y,Bunker1,0);break;
+		case 1:	Nokia5110_PrintBMP(Bunker.x,Bunker.y,Bunker2,0);break;
+		default:Nokia5110_PrintBMP(Bunker.x,Bunker.y,Bunker3,0);break;
+	}
+}
 void Update_LCD(void){
 	Nokia5110_DisplayBuffer();
 	Semaphore=0;
@@ -538,7 +555,9 @@ void Reset_Game(void){
 	Player_Init();
 	Enemies_Init();
 	Missile_Init();
+	Bunker_Init();
 	Player_Draw();
 	Enemies_Draw();
+	Bunker_Draw();
 	Update_LCD();
 }

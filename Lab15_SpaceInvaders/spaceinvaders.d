@@ -6,3 +6,4 @@
 .\spaceinvaders.o: Switch.h
 .\spaceinvaders.o: GameSound.h
 .\spaceinvaders.o: ADC.h
+.\spaceinvaders.o: C:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
