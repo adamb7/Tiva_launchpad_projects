@@ -436,11 +436,8 @@ void SysTick_Handler(void){
 		EnemyAttack();
 		GameSound_Play(227); //play shooting sound
 	}
-	//move player missile
 	PlayerMissile_Move();
-	//move player
 	Player_Move(ShipPos);
-	//move sprites
 	EnemyMissile_Move();
 	Enemy_Move();
 	//draw to RAM buffer
@@ -458,14 +455,14 @@ void Enemy_Init(void){int i;
 		Enemy[i].x=(i*16);
 		Enemy[i].y=ENEMY10H-1;
 		Enemy[i].image=SmallEnemy10PointA;
-		Enemy[i].life=1;
+		Enemy[i].life=2;
 	}
 	AllDead=0;
 	AnimateEnemy=1;
 }
 void Enemy_Move(void){int i;
 	for(i=0; i<5;i++){
-		if(Enemy[i].life==1){
+		if(Enemy[i].life==2){
 			if(AnimateEnemy == 1){
 				Enemy[i].x +=2;
 			}
@@ -479,7 +476,7 @@ void Enemy_Move(void){int i;
 unsigned short FrameCount=0;
 void Enemy_Draw(void){int i; unsigned short dead=0; 
 	for(i=0;i<5;i++){
-		if(Enemy[i].life==1){
+		if(Enemy[i].life==2){
 			if(FrameCount == 0){
 				Nokia5110_PrintBMP(Enemy[i].x,Enemy[i].y,SmallEnemy10PointA,0);
 			}
@@ -488,8 +485,14 @@ void Enemy_Draw(void){int i; unsigned short dead=0;
 			}
 		}
 		else{
-			//TODO death anim explosions w/ flag?
-			dead++;
+			if(Enemy[i].life==1){
+				Nokia5110_PrintBMP(Enemy[i].x,Enemy[i].y,SmallExplosion0,0);
+				Enemy[i].life=0;
+			}
+			else{
+				Nokia5110_PrintBMP(Enemy[i].x,Enemy[i].y,SmallExplosion1,0);
+				dead++;
+			}
 		}
 	}
 	if(dead==5) AllDead=1;
@@ -499,14 +502,28 @@ void Player_Init(void){
 	Player.x=32;
 	Player.y=47;
 	Player.image=PlayerShip0;
-	Player.life=1;
-	Nokia5110_PrintBMP(33, 47 - PLAYERH, Bunker0, 0);
+	Player.life=3;
 }
 void Player_Move(unsigned long data){
-	Player.x= data; //84 pixel, player width:18, 12bit ADC => [0 ; 84-18]: 66-0=66 4096/66 = 62.0606
+	if(Player.life==3){
+		Player.x= data; //84 pixel, player width:18, 12bit ADC => [0 ; 84-18]: 66-0=66 4096/66 = 62.0606
+	}
 }
 void Player_Draw(void){
-	Nokia5110_PrintBMP(Player.x,Player.y,Player.image,0);
+	if(Player.life==3){
+		Nokia5110_PrintBMP(Player.x,Player.y,Player.image,0);
+	}
+	if(Player.life==4){
+		Player.life=0;
+	}
+	if(Player.life==1){
+		Nokia5110_PrintBMP(Player.x,Player.y,BigExplosion1,0);
+		Player.life=4;
+	}
+	if(Player.life==2){
+		Nokia5110_PrintBMP(Player.x,Player.y,BigExplosion0,0);
+		Player.life=1;
+	}
 }
 void PlayerMissile_Init(void){
 	PlayerMissile.life=0;
@@ -527,12 +544,11 @@ void PlayerMissile_Draw(void){
 			case 41: Nokia5110_PrintBMP(PlayerMissile.x,PlayerMissile.y,Missile2,0);break;
 			case 19: Nokia5110_PrintBMP(PlayerMissile.x,PlayerMissile.y,Missile1,0);
 				switch(PlayerMissile.x>>4){
-					case 1: Enemy[1].life=0;break;
-					case 2:	Enemy[2].life=0;break;
-					case 3:	Enemy[3].life=0;break;
-					case 4:	Enemy[4].life=0;break;
-					default:Enemy[0].life=0;
-					//TODO Enemy explosion anim!!!
+					case 1: if(Enemy[1].life==2) {Enemy[1].life=1;}break;
+					case 2:	if(Enemy[2].life==2) {Enemy[2].life=1;}break;
+					case 3:	if(Enemy[3].life==2) {Enemy[3].life=1;}break;
+					case 4:	if(Enemy[4].life==2) {Enemy[4].life=1;}break;
+					default:if(Enemy[0].life==2) {Enemy[0].life=1;}
 				};
 				break;
 			default: Nokia5110_PrintBMP(PlayerMissile.x,PlayerMissile.y,Missile0,0);
@@ -575,10 +591,9 @@ void EnemyMissile_Draw(void){unsigned short i;
 			else{
 				if(EnemyMissile[i].y>40){
 					if((EnemyMissile[i].x<=ShipPos+15) &&(EnemyMissile[i].x>=ShipPos)){
-						//TODO BigExplosion Anim!
 						Nokia5110_PrintBMP(EnemyMissile[i].x,EnemyMissile[i].y,Missile1,0);
-						Player.life=0;
-						break;
+						Player.life=2;
+						EnemyMissile[i].life=0;
 					}
 					else{
 						Nokia5110_PrintBMP(EnemyMissile[i].x,EnemyMissile[i].y,Missile0,0);
@@ -605,7 +620,7 @@ void PlayerSpecMissile_Draw(void){
 }
 void EnemyAttack(void){unsigned short i;
 	for(i=0;i<5;i++){
-		if(Enemy[i].life==1){
+		if(Enemy[i].life==2){
 			EnemyMissile[i].x=7+(i*16); //(+i*16) 7,23,39,55,71
 			EnemyMissile[i].y=19;
 			EnemyMissile[i].life=1;

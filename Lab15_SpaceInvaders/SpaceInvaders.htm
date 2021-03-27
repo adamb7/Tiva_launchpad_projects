@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\SpaceInvaders.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\SpaceInvaders.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Fri Mar 26 00:40:39 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Sat Mar 27 02:20:16 2021
 <BR><P>
 <H3>Maximum Stack Usage =         60 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -784,7 +784,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
 <P><STRONG><a name="[95]"></a>Bunker_Init</STRONG> (Thumb, 42 bytes, Stack size 8 bytes, spaceinvaders.o(i.Bunker_Init))
@@ -792,7 +792,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
 <P><STRONG><a name="[99]"></a>DACInit</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, gamesound.o(i.DACInit))
@@ -813,7 +813,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
-<P><STRONG><a name="[96]"></a>EnemyMissile_Draw</STRONG> (Thumb, 220 bytes, Stack size 8 bytes, spaceinvaders.o(i.EnemyMissile_Draw))
+<P><STRONG><a name="[96]"></a>EnemyMissile_Draw</STRONG> (Thumb, 228 bytes, Stack size 8 bytes, spaceinvaders.o(i.EnemyMissile_Draw))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = EnemyMissile_Draw &rArr; Nokia5110_PrintBMP
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
@@ -822,24 +822,24 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[aa]"></a>EnemyMissile_Init</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, spaceinvaders.o(i.EnemyMissile_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<BR><BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
 <P><STRONG><a name="[b2]"></a>EnemyMissile_Move</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, spaceinvaders.o(i.EnemyMissile_Move))
 <BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
-<P><STRONG><a name="[97]"></a>Enemy_Draw</STRONG> (Thumb, 114 bytes, Stack size 16 bytes, spaceinvaders.o(i.Enemy_Draw))
+<P><STRONG><a name="[97]"></a>Enemy_Draw</STRONG> (Thumb, 186 bytes, Stack size 16 bytes, spaceinvaders.o(i.Enemy_Draw))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = Enemy_Draw &rArr; Nokia5110_PrintBMP
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
 <P><STRONG><a name="[a8]"></a>Enemy_Init</STRONG> (Thumb, 68 bytes, Stack size 0 bytes, spaceinvaders.o(i.Enemy_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<BR><BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
 <P><STRONG><a name="[b3]"></a>Enemy_Move</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, spaceinvaders.o(i.Enemy_Move))
@@ -866,12 +866,12 @@ Global Symbols
 <LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdwrite
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
-<P><STRONG><a name="[a7]"></a>Nokia5110_ClearBuffer</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, nokia5110.o(i.Nokia5110_ClearBuffer))
+<P><STRONG><a name="[a6]"></a>Nokia5110_ClearBuffer</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, nokia5110.o(i.Nokia5110_ClearBuffer))
 <BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
 <P><STRONG><a name="[9e]"></a>Nokia5110_DisplayBuffer</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, nokia5110.o(i.Nokia5110_DisplayBuffer))
@@ -880,7 +880,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DrawFullImage
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Update_LCD
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
 <P><STRONG><a name="[9f]"></a>Nokia5110_DrawFullImage</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, nokia5110.o(i.Nokia5110_DrawFullImage))
@@ -919,8 +919,7 @@ Global Symbols
 <P><STRONG><a name="[94]"></a>Nokia5110_PrintBMP</STRONG> (Thumb, 420 bytes, Stack size 36 bytes, nokia5110.o(i.Nokia5110_PrintBMP))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = Nokia5110_PrintBMP
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Init
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Draw
+<BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Draw
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayerMissile_Draw
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy_Draw
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EnemyMissile_Draw
@@ -942,7 +941,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
 </UL>
 
-<P><STRONG><a name="[a3]"></a>PlayerMissile_Draw</STRONG> (Thumb, 140 bytes, Stack size 8 bytes, spaceinvaders.o(i.PlayerMissile_Draw))
+<P><STRONG><a name="[a3]"></a>PlayerMissile_Draw</STRONG> (Thumb, 180 bytes, Stack size 8 bytes, spaceinvaders.o(i.PlayerMissile_Draw))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = PlayerMissile_Draw &rArr; Nokia5110_PrintBMP
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
@@ -951,39 +950,35 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[a9]"></a>PlayerMissile_Init</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, spaceinvaders.o(i.PlayerMissile_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<BR><BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
 <P><STRONG><a name="[b0]"></a>PlayerMissile_Move</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, spaceinvaders.o(i.PlayerMissile_Move))
 <BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
-<P><STRONG><a name="[a4]"></a>Player_Draw</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, spaceinvaders.o(i.Player_Draw))
+<P><STRONG><a name="[a4]"></a>Player_Draw</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, spaceinvaders.o(i.Player_Draw))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = Player_Draw &rArr; Nokia5110_PrintBMP
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
-<P><STRONG><a name="[a5]"></a>Player_Init</STRONG> (Thumb, 42 bytes, Stack size 8 bytes, spaceinvaders.o(i.Player_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = Player_Init &rArr; Nokia5110_PrintBMP
-</UL>
-<BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
-</UL>
-<BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<P><STRONG><a name="[a7]"></a>Player_Init</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, spaceinvaders.o(i.Player_Init))
+<BR><BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
-<P><STRONG><a name="[b1]"></a>Player_Move</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, spaceinvaders.o(i.Player_Move))
+<P><STRONG><a name="[b1]"></a>Player_Move</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, spaceinvaders.o(i.Player_Move))
 <BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
-<P><STRONG><a name="[a6]"></a>Reset_Game</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, spaceinvaders.o(i.Reset_Game))
+<P><STRONG><a name="[a5]"></a>Reset_Game</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, spaceinvaders.o(i.Reset_Game))
 <BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = Reset_Game &rArr; Enemy_Draw &rArr; Nokia5110_PrintBMP
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Update_LCD
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Init
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Init
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Draw
 <LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayerMissile_Init
 <LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy_Init
@@ -992,7 +987,7 @@ Global Symbols
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bunker_Init
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bunker_Draw
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DisplayBuffer
-<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_ClearBuffer
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_ClearBuffer
 <LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Clear
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1027,7 +1022,7 @@ Global Symbols
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EnemyMissile_Draw
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EnemyAttack
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bunker_Draw
-<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_ClearBuffer
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_ClearBuffer
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
@@ -1082,7 +1077,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DisplayBuffer
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
 <P><STRONG><a name="[8a]"></a>main</STRONG> (Thumb, 196 bytes, Stack size 0 bytes, spaceinvaders.o(i.main))
@@ -1095,7 +1090,7 @@ Global Symbols
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Init
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Update_LCD
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Systick_Init
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay100ms
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Random_Init
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_SetCursor
