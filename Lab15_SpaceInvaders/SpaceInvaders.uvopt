@@ -161,7 +161,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGDARM</Key>
-          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=329,239,695,464,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)(9108=612,480,777,701,0)(9106=1321,476,1530,632,1)(9104=582,260,978,530,0)(9107=1042,300,1495,570,1)(9102=643,198,1039,471,0)</Name>
+          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=329,239,695,464,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)(9108=612,480,777,701,0)(9106=780,156,989,312,1)(9104=582,260,978,530,0)(9107=1042,300,1495,570,1)(9102=643,198,1039,471,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -219,37 +219,47 @@
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Player.x,0x0A</ItemText>
+          <ItemText>debug,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>debug,0x0A</ItemText>
+          <ItemText>SampleCount</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>SampleCount</ItemText>
+          <ItemText>TimerCount</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>TimerCount</ItemText>
+          <ItemText>EnemyMissile[1].life,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>EnemyMissile[1].life,0x0A</ItemText>
+          <ItemText>EnemyMissile[1].y,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
           <WinNumber>1</WinNumber>
-          <ItemText>EnemyMissile[1].y,0x0A</ItemText>
+          <ItemText>EnemyMissile[1].x,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>EnemyMissile[1].x,0x0A</ItemText>
+          <ItemText>enemyAttack</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>EnemyMissile[3]</ItemText>
+        </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>EnemyMissile[4]</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -328,7 +338,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>351</TopLine>
+      <TopLine>315</TopLine>
       <CurrentLine>391</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Nokia5110.c</PathWithFileName>
@@ -344,8 +354,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>8</TopLine>
-      <CurrentLine>26</CurrentLine>
+      <TopLine>2</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\random.s</PathWithFileName>
       <FilenameWithoutPath>random.s</FilenameWithoutPath>
@@ -358,10 +368,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>33</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>272</TopLine>
-      <CurrentLine>379</CurrentLine>
+      <TopLine>497</TopLine>
+      <CurrentLine>648</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\SpaceInvaders.c</PathWithFileName>
       <FilenameWithoutPath>SpaceInvaders.c</FilenameWithoutPath>
@@ -425,7 +435,7 @@
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>27</TopLine>
-      <CurrentLine>66</CurrentLine>
+      <CurrentLine>73</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\GameSound.c</PathWithFileName>
       <FilenameWithoutPath>GameSound.c</FilenameWithoutPath>
