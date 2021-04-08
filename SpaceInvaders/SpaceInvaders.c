@@ -85,7 +85,7 @@ void Delay100ms(unsigned long count); // time delay in 0.1 seconds
 unsigned long Semaphore;
 unsigned long enemyStatus;
 unsigned long PlayerPos;
-unsigned short missileCanHit(void);
+unsigned short missileCloseToEnemy(void);
 unsigned long debug;
 
 // *************************** Images ***************************
@@ -468,7 +468,7 @@ void SysTick_Handler(void){
 	Player_Draw();
 	Enemy_Draw();
 	PlayerMissile_Draw();
-	Bunker_Draw();
+	//Bunker_Draw();
 	EnemyMissile_Draw();
 	Semaphore=1;
 }
@@ -511,9 +511,9 @@ void Enemy_Move(void){unsigned short i,j; //y:48(0..47) x:84(0..83)
 			}
 			else{			
 				if(direction)
-					Enemy[i][j].x-=1;
+					Enemy[i][j].x--;
 				else
-					Enemy[i][j].x+=1;
+					Enemy[i][j].x++;
 			}
 		}
 	}
@@ -528,7 +528,7 @@ void Enemy_Move(void){unsigned short i,j; //y:48(0..47) x:84(0..83)
 		direction=0;
 	}
 	if(((enemyStatus&0x0F)>0 && Enemy[1][0].y>46-PLAYERH)||((enemyStatus&0xF0)>0 && Enemy[0][0].y>46-PLAYERH)){
-		Player.life=0;
+		Player.life=2;
 	}
 	if(((enemyStatus&0x0F)>0 && Enemy[1][0].y>41-PLAYERH)||((enemyStatus&0xF0)>0 && Enemy[0][0].y>41-PLAYERH)){
 		Bunker[0].life=0;
@@ -580,13 +580,13 @@ void Player_Draw(void){
 }
 void PlayerMissile_Init(void){
 	PlayerMissile.life=0;
-	PlayerMissile.image[0]=Missile0;
-	PlayerMissile.image[1]=Missile1;
-	PlayerMissile.image[2]=Missile2;
+	PlayerMissile.image[0]=Laser0;
+	PlayerMissile.image[1]=Laser1;
+	PlayerMissile.image[2]=Laser1;
 }
 void PlayerMissile_Move(void){
 	if(PlayerMissile.life==1){
-		if(PlayerMissile.y == 9){
+		if(PlayerMissile.y == LASERH){
 			PlayerMissile.life=0;
 		}
 		else{
@@ -594,48 +594,72 @@ void PlayerMissile_Move(void){
 		}
 	}
 }
-void PlayerMissile_Draw(void){unsigned short i;
+void PlayerMissile_Draw(void){unsigned short i,j;
 	if(PlayerMissile.life==1){
-		if(missileCanHit()){
-			for(i=0;i<4;i++){
-				checkHit(0,i);
+		if(PlayerMissile.y<(47-PLAYERH) && PlayerMissile.y>(41-PLAYERH)){
+			if(Bunker[0].life>0 || Bunker[1].life>0 || Bunker[2].life>0){
+				for(j=0;j<3;j++){
+					if((PlayerMissile.x>(7+j*26) && PlayerMissile.x<(25+j*26))||((PlayerMissile.x+LASERW)>(7+j*26) && (PlayerMissile.x+LASERW)<(25+j*26))){
+						if(Bunker[j].life!=0){
+							Nokia5110_PrintBMP(PlayerMissile.x,PlayerMissile.y,PlayerMissile.image[1],0);
+							Bunker[j].life--;
+							PlayerMissile.life=0;
+							break;
+						}
+					}
+				}
 			}
 		}
-		else{
-			Nokia5110_PrintBMP(PlayerMissile.x,PlayerMissile.y,PlayerMissile.image[0],0);
+		if(PlayerMissile.life!=0){
+			if(missileCloseToEnemy()){
+				for(i=0;i<4;i++){
+					checkHit(0,i);
+				}
+			}
 		}
+		if(PlayerMissile.life!=0)
+			Nokia5110_PrintBMP(PlayerMissile.x,PlayerMissile.y,PlayerMissile.image[0],0);
 	}
 }
-unsigned short missileCanHit(void){
-	if((Enemy[0][0].y+2*ENEMY10H)>=(PlayerMissile.y+9) && Enemy[0][0].x<=(PlayerMissile.x+4) && Enemy[0][0].x+4*ENEMY10W>=(PlayerMissile.x+4))
+//unsigned short missileCloseToEnemy(void){
+//	if((Enemy[0][0].y+2*ENEMY10H)>=(PlayerMissile.y+LASERH) && Enemy[0][0].x<=(PlayerMissile.x+LASERW) && Enemy[0][0].x+4*ENEMY10W>=(PlayerMissile.x+LASERW))
+//		return 1;
+//	if((Enemy[0][0].y+2*ENEMY10H)>=PlayerMissile.y && Enemy[0][0].x<=PlayerMissile.x && Enemy[0][0].x+4*ENEMY10W>=PlayerMissile.x)
+//		return 1;
+//	return 0;
+//}
+//unsigned short missileCloseToEnemy(void){
+//	if(Enemy[1][0].y>=(PlayerMissile.y+LASERH) && Enemy[1][0].x<=(PlayerMissile.x+LASERW) && Enemy[1][3].x+ENEMY10W>=(PlayerMissile.x+LASERW))
+//		return 1;
+//	if(Enemy[1][0].y>=PlayerMissile.y && Enemy[1][0].x<=PlayerMissile.x && Enemy[1][3].x+ENEMY10W>=PlayerMissile.x)
+//		return 1;
+//	return 0;
+//}
+unsigned short missileCloseToEnemy(void){
+	if(Enemy[1][0].y>=(PlayerMissile.y+LASERH) && Enemy[1][0].x<=(PlayerMissile.x+LASERW) && Enemy[1][3].x+ENEMY10W>=(PlayerMissile.x+LASERW))
 		return 1;
-	if((Enemy[0][0].y+2*ENEMY10H)>=PlayerMissile.y && Enemy[0][0].x<=PlayerMissile.x && Enemy[0][0].x+4*ENEMY10W>=PlayerMissile.x)
+	if(Enemy[1][0].y>=PlayerMissile.y && Enemy[1][FSM[currentState].leftBoundaryIndex].x<=PlayerMissile.x && Enemy[1][FSM[currentState].rightBoundaryIndex].x+ENEMY10W>=PlayerMissile.x)
 		return 1;
 	return 0;
 }
 unsigned short checkHit(unsigned short i, unsigned short j){
-	if((Enemy[i][j].x<=PlayerMissile.x && Enemy[i][j].x+ENEMY10W>=PlayerMissile.x)||(Enemy[i][j].x<=(PlayerMissile.x+4) && Enemy[i][j].x+ENEMY10W>=(PlayerMissile.x+4))){
-		if(Enemy[i+1][j].life==2){
+	if((Enemy[i][j].x<=PlayerMissile.x && Enemy[i][j].x+ENEMY10W>=PlayerMissile.x)||(Enemy[i][j].x<=(PlayerMissile.x+LASERW) && Enemy[i][j].x+ENEMY10W>=(PlayerMissile.x+LASERW))){
+		if(Enemy[i+1][j].life==2 && PlayerMissile.y>Enemy[i][j].y){
 			Enemy[i+1][j].life=1;
 			Nokia5110_PrintBMP(PlayerMissile.x,PlayerMissile.y,PlayerMissile.image[1],0);
 			PlayerMissile.life=0;
 			return 1;
 		}
 		else{
-			if((Enemy[i][j].y+ENEMY30H-1)>=PlayerMissile.y && Enemy[i][j].life==2){
+			if(Enemy[i][j].life==2 && !(PlayerMissile.y>Enemy[i][j].y)){ //(Enemy[i][j].y+ENEMY30H-1)>=PlayerMissile.y
 				Enemy[i][j].life=1;
 				Nokia5110_PrintBMP(PlayerMissile.x,PlayerMissile.y,PlayerMissile.image[1],0);
 				PlayerMissile.life=0;
 				return 1;
 			}
-			else{
-					Nokia5110_PrintBMP(PlayerMissile.x,PlayerMissile.y,PlayerMissile.image[0],0);
-					return 0;
-			}
 		}
 	}
-	else
-		return 0;
+	return 0;
 }
 void Bunker_Init(void){unsigned short i;
 	for(i=0;i<3;i++){
@@ -676,7 +700,7 @@ void EnemyMissile_Draw(void){unsigned short i,j;
 			}
 			else{
 				if(EnemyMissile[i].y>46-PLAYERH){
-					if(EnemyMissile[i].x>PlayerPos && EnemyMissile[i].x<PlayerPos+PLAYERW){
+					if((EnemyMissile[i].x>PlayerPos && EnemyMissile[i].x<PlayerPos+PLAYERW)||((EnemyMissile[i].x+MISSILEW)>PlayerPos && (EnemyMissile[i].x+MISSILEW)<PlayerPos+PLAYERW)){
 						Nokia5110_PrintBMP(EnemyMissile[i].x,EnemyMissile[i].y,EnemyMissile[i].image[1],0);
 						Player.life=2;
 						EnemyMissile[i].life=0;
@@ -686,7 +710,7 @@ void EnemyMissile_Draw(void){unsigned short i,j;
 					if(EnemyMissile[i].y>41-PLAYERH){
 						if(Bunker[0].life>0 || Bunker[1].life>0 || Bunker[2].life>0){
 							for(j=0;j<3;j++){
-								if(EnemyMissile[i].x>(7+j*26) && EnemyMissile[i].x<(25+j*26)){
+								if((EnemyMissile[i].x>(7+j*26) && EnemyMissile[i].x<(25+j*26))||((EnemyMissile[i].x+MISSILEW)>(7+j*26) && (EnemyMissile[i].x+MISSILEW)<(25+j*26))){
 									if(Bunker[j].life!=0){
 										Nokia5110_PrintBMP(EnemyMissile[i].x,EnemyMissile[i].y,EnemyMissile[i].image[1],0);
 										Bunker[j].life--;
@@ -730,10 +754,10 @@ void Reset_Game(void){
 	Enemy_Init();
 	PlayerMissile_Init();
 	EnemyMissile_Init();
-	Bunker_Init();
+	//Bunker_Init();
 	Player_Draw();
 	Enemy_Draw();
-	Bunker_Draw();
+	//Bunker_Draw();
 	Random_Init(NVIC_ST_CURRENT_R);
 	Update_LCD();
 }

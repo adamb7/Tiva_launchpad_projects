@@ -161,7 +161,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGDARM</Key>
-          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=329,239,695,464,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)(9108=612,480,777,701,0)(9106=872,63,1081,219,1)(9104=582,260,978,530,0)(9107=1042,300,1495,570,1)(9102=643,198,1039,471,0)</Name>
+          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=329,239,695,464,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)(9108=612,480,777,701,0)(9106=800,360,1009,516,1)(9104=582,260,978,530,0)(9107=1042,300,1495,570,1)(9102=643,198,1039,471,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -249,17 +249,37 @@
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Enemy[0][0].y,0x0A</ItemText>
+          <ItemText>42-((unsigned char)PlayerShip0[22]),0x0A</ItemText>
         </Ww>
         <Ww>
           <count>9</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Enemy[1][0].y,0x0A</ItemText>
+          <ItemText>PlayerMissile.x,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>10</count>
           <WinNumber>1</WinNumber>
-          <ItemText>42-((unsigned char)PlayerShip0[22]),0x0A</ItemText>
+          <ItemText>PlayerMissile.y,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Enemy[0][0].x,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Enemy[0][0].y,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>13</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Enemy[1][0].x,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Enemy[1][0].y,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -368,10 +388,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>24</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>394</TopLine>
-      <CurrentLine>534</CurrentLine>
+      <TopLine>401</TopLine>
+      <CurrentLine>432</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\SpaceInvaders.c</PathWithFileName>
       <FilenameWithoutPath>SpaceInvaders.c</FilenameWithoutPath>
@@ -434,8 +454,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>22</TopLine>
-      <CurrentLine>31</CurrentLine>
+      <TopLine>33</TopLine>
+      <CurrentLine>73</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\GameSound.c</PathWithFileName>
       <FilenameWithoutPath>GameSound.c</FilenameWithoutPath>
