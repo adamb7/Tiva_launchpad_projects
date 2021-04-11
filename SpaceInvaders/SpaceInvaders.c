@@ -177,7 +177,6 @@ const unsigned char SmallEnemyBonus0[] = {
  0x00, 0x00, 0x00, 0x00, 0xFF, 0xF0, 0x0F, 0xF0, 0x0F, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x0F, 0xF0, 0xFF, 0x0F, 0xF0,
  0xFF, 0x0F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
  0x00, 0x0F, 0xFF, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF};
-
 // small shield floating in space to cover the player's ship from enemy fire (undamaged)
 // width=18 x height=5
 const unsigned char Bunker0[] = {
@@ -310,6 +309,9 @@ const unsigned char Laser1[] = {
  0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF};
 
+
+
+	
 // *************************** Capture image dimensions out of BMP**********
 #define BUNKERW     ((unsigned char)Bunker0[18])
 #define BUNKERH     ((unsigned char)Bunker0[22])
@@ -350,6 +352,7 @@ struct State{
 };
 typedef struct State Styp;
 unsigned long currentState;
+enum gameFlags {WON,LOST,IN_PROGRESS} gameIs;
 Styp FSM[16]={ //y:48(0..47) x:84(0..83) -> 84 - 4*ENEMY10W = 20 => ENEMY10W+4
 	{0,0,1,{0,0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8,0x9,0xA,0xB,0xC,0xD,0xE,0xF}},
 	{3,3,4,{0,0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8,0x9,0xA,0xB,0xC,0xD,0xE,0xF}},
@@ -387,8 +390,9 @@ void Enemy_Attack(void);
 void Update_LCD(void);
 void Reset_Game(void);
 void Reset_Score(void);
-void Display_Score(void);
 void Pause_Init(void);
+void Display_Score(void);
+void Display_StartScreen(void);
 unsigned short checkHit(unsigned short, unsigned short);
 
 
@@ -401,15 +405,23 @@ int main(void){
 	Switch_Init();
 	Semaphore=0;
 	Systick_Init(2666667); //30Hz
-	Reset_Game();
 	Reset_Score();
+	gameIs=LOST;
   while(1){
+		Nokia5110_Clear();
+		if(gameIs==LOST){
+			Display_StartScreen();
+			while((Switch_Read() & 0x3) == 0){}
+		}
+		gameIs=IN_PROGRESS;
+		Delay100ms(10);
+		Reset_Game();
 		while(1){
 			while(Semaphore==0){}
 			Update_LCD();
-			if((Player.life == 0) || (enemyStatus==0)) break; 
+			if(gameIs!=IN_PROGRESS)break;
 		}	
-		if(Player.life==0){
+		if(gameIs==LOST){
 			Nokia5110_Clear();
 			Nokia5110_SetCursor(1, 1);
 			Nokia5110_OutString("GAME OVER");
@@ -417,24 +429,22 @@ int main(void){
 			Nokia5110_OutString("Nice try,");
 			Nokia5110_SetCursor(1, 3);
 			Nokia5110_OutString("Earthling!");
-			Delay100ms(2);
+			Delay100ms(30);
 			Nokia5110_Clear();
 			Display_Score();
 			Reset_Score();
 		}
-		else{
+		if(gameIs==WON){
 			Nokia5110_SetCursor(1,1);
 			Nokia5110_OutString("Well done!");
 			Nokia5110_SetCursor(1,2);
 			Nokia5110_OutString("You won.");
-			Delay100ms(2);
+			Delay100ms(30);
 			Nokia5110_Clear();
 			Display_Score();
 		}
 		while((Switch_Read() & 0x3) == 0){}
-		Nokia5110_Clear();
 		Delay100ms(5);
-		Reset_Game();
 	}
 }
 void Delay100ms(unsigned long count){unsigned long volatile time;
@@ -579,6 +589,7 @@ void Enemy_Draw(void){unsigned short i,j;
 					if(Enemy[i][j].image[0]==SmallEnemy20PointA) Score+=20;
 					if(Enemy[i][j].image[0]==SmallEnemy10PointA) Score+=10;
 					GameSound_Play("ENEMY_KILLED");
+					if(enemyStatus==0x00)gameIs=WON;
 				}
 			}
 		}
@@ -604,7 +615,7 @@ void Player_Draw(void){
 	switch(Player.life){
 		case 1: Player.life=4; break;
 		case 2: Player.life=1; GameSound_Play("PLAYER_KILLED"); break;
-		case 4: Player.life=0; break;
+		case 4: Player.life=0; gameIs=LOST; break;
 		default: break;
 	};
 }
@@ -791,4 +802,10 @@ void Display_Score(void){
 	Nokia5110_OutString("Your score:");
 	Nokia5110_SetCursor(2, 3);
 	Nokia5110_OutUDec(Score);
+}
+void Display_StartScreen(void){
+	Nokia5110_SetCursor(1, 1);
+	Nokia5110_OutString(" SPACE ");
+	Nokia5110_SetCursor(2, 3);
+	Nokia5110_OutString("INVADERS");
 }
