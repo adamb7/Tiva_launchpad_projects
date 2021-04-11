@@ -161,7 +161,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGDARM</Key>
-          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=329,239,695,464,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)(9108=612,480,777,701,0)(9106=800,360,1009,516,1)(9104=582,260,978,530,0)(9107=1042,300,1495,570,1)(9102=643,198,1039,471,0)</Name>
+          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=329,239,695,464,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)(9108=612,480,777,701,0)(9106=764,324,973,480,1)(9104=582,260,978,530,0)(9107=1042,300,1495,570,1)(9102=643,198,1039,471,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -209,77 +209,72 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Screen</ItemText>
+          <ItemText>currentState,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>data,0x0A</ItemText>
+          <ItemText>enemyStatus,0x10</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>debug,0x0A</ItemText>
+          <ItemText>Enemy[0][0].x,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>SampleCount</ItemText>
+          <ItemText>Enemy[0][0].y,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>TimerCount</ItemText>
+          <ItemText>Enemy[1][0].x,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>enemyAttack</ItemText>
+          <ItemText>Enemy[1][0].y,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>currentState</ItemText>
+          <ItemText>Score,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
           <WinNumber>1</WinNumber>
-          <ItemText>enemyStatus</ItemText>
+          <ItemText>Player.life,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>42-((unsigned char)PlayerShip0[22]),0x0A</ItemText>
+          <ItemText>FSM[currentState].rightBoundaryIndex,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>9</count>
           <WinNumber>1</WinNumber>
-          <ItemText>PlayerMissile.x,0x0A</ItemText>
+          <ItemText>FSM[currentState].leftBoundaryIndex,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>10</count>
           <WinNumber>1</WinNumber>
-          <ItemText>PlayerMissile.y,0x0A</ItemText>
+          <ItemText>i</ItemText>
         </Ww>
         <Ww>
           <count>11</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Enemy[0][0].x,0x0A</ItemText>
+          <ItemText>j</ItemText>
         </Ww>
         <Ww>
           <count>12</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Enemy[0][0].y,0x0A</ItemText>
+          <ItemText>FSM[currentState].speed</ItemText>
         </Ww>
         <Ww>
           <count>13</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Enemy[1][0].x,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>14</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Enemy[1][0].y,0x0A</ItemText>
+          <ItemText>distance</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -319,11 +314,6 @@
           <FirstString>(GPIO_PORTB_DATA_R &amp; 0xFFFF0000) &gt;&gt; 0</FirstString>
           <SecondString>FF00000000000000000000000000000000002E40000000000000000000000000000000004750494F5F504F5254425F444154415F520000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000001000000000000000000E03F01000000000000000000000000000000000000006C020000</SecondString>
         </Wi>
-        <Wi>
-          <IntNumber>1</IntNumber>
-          <FirstString>`debug</FirstString>
-          <SecondString>00800000000000000000000000000000000040400000000000000000000000000000000064656275670000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000002000000000000000000E03F0100000000000000000000000000000000000000B0100000</SecondString>
-        </Wi>
       </LogicAnalyzers>
     </TargetOption>
   </Target>
@@ -342,7 +332,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>268</TopLine>
+      <TopLine>267</TopLine>
       <CurrentLine>277</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\startup.s</PathWithFileName>
@@ -358,8 +348,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>121</TopLine>
-      <CurrentLine>130</CurrentLine>
+      <TopLine>357</TopLine>
+      <CurrentLine>390</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Nokia5110.c</PathWithFileName>
       <FilenameWithoutPath>Nokia5110.c</FilenameWithoutPath>
@@ -388,10 +378,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>24</ColumnNumber>
+      <ColumnNumber>4</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>401</TopLine>
-      <CurrentLine>432</CurrentLine>
+      <TopLine>324</TopLine>
+      <CurrentLine>477</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\SpaceInvaders.c</PathWithFileName>
       <FilenameWithoutPath>SpaceInvaders.c</FilenameWithoutPath>
@@ -455,7 +445,7 @@
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>33</TopLine>
-      <CurrentLine>73</CurrentLine>
+      <CurrentLine>64</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\GameSound.c</PathWithFileName>
       <FilenameWithoutPath>GameSound.c</FilenameWithoutPath>

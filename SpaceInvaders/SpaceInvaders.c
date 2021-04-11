@@ -79,9 +79,7 @@
 
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
-//void Timer2_Init(unsigned long period);
 void Delay100ms(unsigned long count); // time delay in 0.1 seconds
-//unsigned long TimerCount;
 unsigned long Semaphore;
 unsigned long enemyStatus;
 unsigned long PlayerPos;
@@ -400,6 +398,7 @@ int main(void){
 	Nokia5110_Init();
 	GameSound_Init();
 	ADC_Init();
+	Switch_Init();
 	Semaphore=0;
 	Systick_Init(2666667); //30Hz
 	Reset_Game();
@@ -455,26 +454,27 @@ void Systick_Init(unsigned long period){
 }
 void SysTick_Handler(void){
 	unsigned long Data;
+	static unsigned short switchState = 0;
 	Data = Switch_Read();
 	PlayerPos = ADC_In()/62; //84 pixel, player width:18, 12bit ADC => [0 ; 84-18]: 66-0=66 4096/66 = 62.0606
 	if(Data&0x2 && PlayerMissile.life==0){
 		PlayerMissile.x=PlayerPos+8;
 		PlayerMissile.y=41;
 		PlayerMissile.life=1;
-		GameSound_Play(227); //play shooting sound
+		GameSound_Play("PLAYER_SHOOT"); //play shooting sound
 		Random_Init(NVIC_ST_CURRENT_R);
 	}
-	if(Data&0x1){
-		Pause^=1UL;
-		GameSound_Play(227); //play shooting sound
-		Random_Init(NVIC_ST_CURRENT_R);
+	switchState=(switchState<<1) | Data&0x1 | 0xe000;
+	if(switchState==0xf000){
+			Pause^=1UL;
+			Random_Init(NVIC_ST_CURRENT_R);
 	}
 	if(Pause==0 && Player.life==3 && enemyStatus!=0){
 		PlayerMissile_Move();
 		Player_Move(PlayerPos);
 		EnemyMissile_Move();
 		Enemy_Move();
-		Enemy_Attack();
+		//Enemy_Attack();
 	}
 	Nokia5110_ClearBuffer();
 	PlayerMissile_Draw();
@@ -486,7 +486,7 @@ void SysTick_Handler(void){
 	Bunker_Draw();
 	Semaphore=1;
 }
-unsigned short direction,moveDown;
+unsigned char direction,moveDown;
 void Enemy_Init(void){int i,j;
 	for(i=0;i<2;i++){
 		for(j=0;j<4;j++){
@@ -563,8 +563,8 @@ void Enemy_Move(void){unsigned short i,j;signed short distance; //y:48(0..47) x:
 	}
 	currentState=FSM[currentState].nextState[0xF&((enemyStatus>>4)|enemyStatus)];
 }
-unsigned short frameCount=0;
 void Enemy_Draw(void){unsigned short i,j;
+	static unsigned char frameCount=0;
 	for(i=0;i<2;i++){
 		for(j=0;j<4;j++){
 			if(Enemy[i][j].life==2){
@@ -578,6 +578,7 @@ void Enemy_Draw(void){unsigned short i,j;
 					if(Enemy[i][j].image[0]==SmallEnemy30PointA) Score+=30;
 					if(Enemy[i][j].image[0]==SmallEnemy20PointA) Score+=20;
 					if(Enemy[i][j].image[0]==SmallEnemy10PointA) Score+=10;
+					GameSound_Play("ENEMY_KILLED");
 				}
 			}
 		}
@@ -602,7 +603,7 @@ void Player_Draw(void){
 	Nokia5110_PrintBMP(Player.x,Player.y,Player.image[3-Player.life],0);
 	switch(Player.life){
 		case 1: Player.life=4; break;
-		case 2: Player.life=1; break;
+		case 2: Player.life=1; GameSound_Play("PLAYER_KILLED"); break;
 		case 4: Player.life=0; break;
 		default: break;
 	};
