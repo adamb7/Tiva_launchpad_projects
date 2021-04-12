@@ -80,12 +80,11 @@
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
 void Delay100ms(unsigned long count); // time delay in 0.1 seconds
-unsigned long Semaphore;
-unsigned long enemyStatus;
+unsigned char Semaphore;
+unsigned short enemyStatus;
 unsigned long PlayerPos;
-unsigned short missileCloseToEnemy(void);
 unsigned short Score;
-unsigned short Pause;
+unsigned char Pause;
 
 // *************************** Images ***************************
 // enemy ship that starts at the top of the screen (arms/mouth closed)
@@ -336,7 +335,7 @@ struct Entity{
 	signed long x;
 	signed long y;
 	const unsigned char *image[4];
-	long life;
+	signed char life;
 };
 typedef struct Entity Etyp;
 Etyp Enemy[2][4];
@@ -344,15 +343,15 @@ Etyp Player;
 Etyp Bunker[3];
 Etyp EnemyMissile[4];
 Etyp PlayerMissile;
+enum gameFlags {WON,LOST,IN_PROGRESS} gameIs;
 struct State{
-	signed long leftBoundaryIndex;
-	signed long rightBoundaryIndex;
-	unsigned long speed;
-	unsigned long nextState[16];
+	signed char leftBoundaryIndex;
+	signed char rightBoundaryIndex;
+	unsigned char speed;
+	unsigned char nextState[16];
 };
 typedef struct State Styp;
-unsigned long currentState;
-enum gameFlags {WON,LOST,IN_PROGRESS} gameIs;
+unsigned char currentState;
 Styp FSM[16]={ //y:48(0..47) x:84(0..83) -> 84 - 4*ENEMY10W = 20 => ENEMY10W+4
 	{0,0,1,{0,0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8,0x9,0xA,0xB,0xC,0xD,0xE,0xF}},
 	{3,3,4,{0,0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8,0x9,0xA,0xB,0xC,0xD,0xE,0xF}},
@@ -393,7 +392,8 @@ void Reset_Score(void);
 void Pause_Init(void);
 void Display_Score(void);
 void Display_StartScreen(void);
-unsigned short checkHit(unsigned short, unsigned short);
+unsigned char checkHit(unsigned char, unsigned char);
+unsigned char missileCloseToEnemy(void);
 
 
 int main(void){
@@ -463,7 +463,7 @@ void Systick_Init(unsigned long period){
 	NVIC_ST_CTRL_R |= 0x01;
 }
 void SysTick_Handler(void){
-	unsigned long Data;
+	unsigned char Data;
 	static unsigned short switchState = 0;
 	Data = Switch_Read();
 	PlayerPos = ADC_In()/62; //84 pixel, player width:18, 12bit ADC => [0 ; 84-18]: 66-0=66 4096/66 = 62.0606
@@ -497,7 +497,7 @@ void SysTick_Handler(void){
 	Semaphore=1;
 }
 unsigned char direction,moveDown;
-void Enemy_Init(void){int i,j;
+void Enemy_Init(void){unsigned char i,j;
 	for(i=0;i<2;i++){
 		for(j=0;j<4;j++){
 			Enemy[i][j].x=(j*16);
@@ -527,7 +527,7 @@ void Enemy_Init(void){int i,j;
 	direction=0;//0->move right, 1<-move left
 	moveDown=0;
 }
-void Enemy_Move(void){unsigned short i,j;signed short distance; //y:48(0..47) x:84(0..83)
+void Enemy_Move(void){unsigned char i,j;signed short distance; //y:48(0..47) x:84(0..83)
 	for(i=0; i<2;i++){
 		for(j=0;j<4;j++){
 			if(moveDown==1){
@@ -573,7 +573,7 @@ void Enemy_Move(void){unsigned short i,j;signed short distance; //y:48(0..47) x:
 	}
 	currentState=FSM[currentState].nextState[0xF&((enemyStatus>>4)|enemyStatus)];
 }
-void Enemy_Draw(void){unsigned short i,j;
+void Enemy_Draw(void){unsigned char i,j;
 	static unsigned char frameCount=0;
 	for(i=0;i<2;i++){
 		for(j=0;j<4;j++){
@@ -635,7 +635,7 @@ void PlayerMissile_Move(void){
 		}
 	}
 }
-void PlayerMissile_Draw(void){unsigned short i,j;
+void PlayerMissile_Draw(void){unsigned char i,j;
 	if(PlayerMissile.life==1){
 		if(PlayerMissile.y<(47-PLAYERH) && PlayerMissile.y>(41-PLAYERH)){
 			if(Bunker[0].life>0 || Bunker[1].life>0 || Bunker[2].life>0){
@@ -662,14 +662,14 @@ void PlayerMissile_Draw(void){unsigned short i,j;
 			Nokia5110_PrintBMP(PlayerMissile.x,PlayerMissile.y,PlayerMissile.image[0],0);
 	}
 }
-unsigned short missileCloseToEnemy(void){
+unsigned char missileCloseToEnemy(void){
 	if(Enemy[1][0].y>=(PlayerMissile.y+LASERH) && Enemy[1][0].x<=(PlayerMissile.x+LASERW) && Enemy[1][3].x+ENEMY10W>=(PlayerMissile.x+LASERW))
 		return 1;
 	if(Enemy[1][0].y>=PlayerMissile.y && Enemy[1][FSM[currentState].leftBoundaryIndex].x<=PlayerMissile.x && Enemy[1][FSM[currentState].rightBoundaryIndex].x+ENEMY10W>=PlayerMissile.x)
 		return 1;
 	return 0;
 }
-unsigned short checkHit(unsigned short i, unsigned short j){
+unsigned char checkHit(unsigned char i, unsigned char j){
 	if((Enemy[i][j].x<=PlayerMissile.x && Enemy[i][j].x+ENEMY10W>=PlayerMissile.x)||(Enemy[i][j].x<=(PlayerMissile.x+LASERW) && Enemy[i][j].x+ENEMY10W>=(PlayerMissile.x+LASERW))){
 		if(Enemy[i+1][j].life==2 && PlayerMissile.y>Enemy[i][j].y){
 			Enemy[i+1][j].life=1;
@@ -688,7 +688,7 @@ unsigned short checkHit(unsigned short i, unsigned short j){
 	}
 	return 0;
 }
-void Bunker_Init(void){unsigned short i;
+void Bunker_Init(void){unsigned char i;
 	for(i=0;i<3;i++){
 		Bunker[i].x=7+i*26;
 		Bunker[i].y=47 - PLAYERH;
@@ -699,13 +699,13 @@ void Bunker_Init(void){unsigned short i;
 		Bunker[i].life=3;
 	}
 }
-void Bunker_Draw(void){unsigned short i;
+void Bunker_Draw(void){unsigned char i;
 	for(i=0;i<3;i++){
 		if(Bunker[i].life>0)
 			Nokia5110_PrintBMP(Bunker[i].x,Bunker[i].y,Bunker[i].image[3-Bunker[i].life],0);
 	}
 }
-void EnemyMissile_Init(void){unsigned short i;
+void EnemyMissile_Init(void){unsigned char i;
 	for(i=0;i<4;i++){
 		EnemyMissile[i].life = 0;
 		EnemyMissile[i].image[0]=Missile0;
@@ -713,13 +713,13 @@ void EnemyMissile_Init(void){unsigned short i;
 		EnemyMissile[i].image[2]=Missile2;
 	}
 }
-void EnemyMissile_Move(void){unsigned short i;
+void EnemyMissile_Move(void){unsigned char i;
 	for(i=0;i<4;i++){
 		if(EnemyMissile[i].life==1)
 			EnemyMissile[i].y+=2;
 	}
 }
-void EnemyMissile_Draw(void){unsigned short i,j;
+void EnemyMissile_Draw(void){unsigned char i,j;
 	for(i=0;i<4;i++){
 		if(EnemyMissile[i].life==1){
 			if(EnemyMissile[i].y>47){
@@ -755,7 +755,7 @@ void EnemyMissile_Draw(void){unsigned short i,j;
 		}
 	}
 }
-void Enemy_Attack(void){unsigned short j; unsigned long enemyAttack;
+void Enemy_Attack(void){unsigned char j; unsigned long enemyAttack;
 	enemyAttack=((Random()>>5)%5);
 	for(j=0;j<4;j++){
 		if(enemyAttack==j && EnemyMissile[j].life==0 && (Enemy[0][j].life==2 || Enemy[1][j].life==2)){

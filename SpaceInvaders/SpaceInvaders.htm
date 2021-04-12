@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\SpaceInvaders.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\SpaceInvaders.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Sun Apr 11 20:30:24 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Mon Apr 12 01:43:39 2021
 <BR><P>
 <H3>Maximum Stack Usage =         76 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -782,7 +782,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[92]"></a>Bunker_Draw</STRONG> (Thumb, 90 bytes, Stack size 16 bytes, spaceinvaders.o(i.Bunker_Draw))
+<P><STRONG><a name="[92]"></a>Bunker_Draw</STRONG> (Thumb, 94 bytes, Stack size 16 bytes, spaceinvaders.o(i.Bunker_Draw))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = Bunker_Draw &rArr; Nokia5110_PrintBMP
 </UL>
 <BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
@@ -829,7 +829,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[99]"></a>EnemyMissile_Draw</STRONG> (Thumb, 574 bytes, Stack size 16 bytes, spaceinvaders.o(i.EnemyMissile_Draw))
+<P><STRONG><a name="[99]"></a>EnemyMissile_Draw</STRONG> (Thumb, 582 bytes, Stack size 16 bytes, spaceinvaders.o(i.EnemyMissile_Draw))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = EnemyMissile_Draw &rArr; Nokia5110_PrintBMP
 </UL>
 <BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
@@ -855,13 +855,13 @@ Global Symbols
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
-<P><STRONG><a name="[ae]"></a>Enemy_Init</STRONG> (Thumb, 352 bytes, Stack size 8 bytes, spaceinvaders.o(i.Enemy_Init))
+<P><STRONG><a name="[ae]"></a>Enemy_Init</STRONG> (Thumb, 356 bytes, Stack size 8 bytes, spaceinvaders.o(i.Enemy_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Enemy_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
-<P><STRONG><a name="[ba]"></a>Enemy_Move</STRONG> (Thumb, 766 bytes, Stack size 12 bytes, spaceinvaders.o(i.Enemy_Move))
+<P><STRONG><a name="[ba]"></a>Enemy_Move</STRONG> (Thumb, 758 bytes, Stack size 12 bytes, spaceinvaders.o(i.Enemy_Move))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Enemy_Move
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
@@ -988,7 +988,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
 </UL>
 
-<P><STRONG><a name="[a7]"></a>PlayerMissile_Draw</STRONG> (Thumb, 298 bytes, Stack size 16 bytes, spaceinvaders.o(i.PlayerMissile_Draw))
+<P><STRONG><a name="[a7]"></a>PlayerMissile_Draw</STRONG> (Thumb, 308 bytes, Stack size 16 bytes, spaceinvaders.o(i.PlayerMissile_Draw))
 <BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = PlayerMissile_Draw &rArr; checkHit &rArr; Nokia5110_PrintBMP
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;missileCloseToEnemy
@@ -1006,7 +1006,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
-<P><STRONG><a name="[aa]"></a>Player_Draw</STRONG> (Thumb, 90 bytes, Stack size 8 bytes, spaceinvaders.o(i.Player_Draw))
+<P><STRONG><a name="[aa]"></a>Player_Draw</STRONG> (Thumb, 94 bytes, Stack size 8 bytes, spaceinvaders.o(i.Player_Draw))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = Player_Draw &rArr; Nokia5110_PrintBMP
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Play
@@ -1158,7 +1158,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayerMissile_Draw
 </UL>
 
-<P><STRONG><a name="[89]"></a>main</STRONG> (Thumb, 254 bytes, Stack size 0 bytes, spaceinvaders.o(i.main))
+<P><STRONG><a name="[89]"></a>main</STRONG> (Thumb, 266 bytes, Stack size 0 bytes, spaceinvaders.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64 + Unknown Stack Size
 <LI>Call Chain = main &rArr; Reset_Game &rArr; Update_LCD &rArr; Display_Score &rArr; Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
 </UL>
@@ -1183,7 +1183,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
 
-<P><STRONG><a name="[a8]"></a>missileCloseToEnemy</STRONG> (Thumb, 170 bytes, Stack size 0 bytes, spaceinvaders.o(i.missileCloseToEnemy))
+<P><STRONG><a name="[a8]"></a>missileCloseToEnemy</STRONG> (Thumb, 168 bytes, Stack size 0 bytes, spaceinvaders.o(i.missileCloseToEnemy))
 <BR><BR>[Called By]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayerMissile_Draw
 </UL>
 <P>
