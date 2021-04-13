@@ -1,10 +1,3 @@
-// 8*R resistor DAC bit 0 on PB0 (least significant bit)
-// 4*R resistor DAC bit 1 on PB1
-// 2*R resistor DAC bit 2 on PB2
-// 1*R resistor DAC bit 3 on PB3 (most significant bit)
-// LED on PB4
-// LED on PB5
-
 #include "GameSound.h"
 #include "..//tm4c123gh6pm.h"
 #include <string.h>
@@ -43,30 +36,26 @@ void Timer2A_Start(void){
 void Timer2A_Stop(void){
 	TIMER2_CTL_R = 0x00000000;
 }
-// You can use this timer only if you learn how it works
 void Timer2_Init(unsigned long period){ 
   unsigned long delay;
-  SYSCTL_RCGCTIMER_R |= 0x04;   // 0) activate timer2
+  SYSCTL_RCGCTIMER_R |= 0x04;
   delay = SYSCTL_RCGCTIMER_R;
   TimerCount = 0;
-  TIMER2_CTL_R = 0x00000000;    // 1) disable timer2A during setup
-  TIMER2_CFG_R = 0x00000000;    // 2) configure for 32-bit mode
-  TIMER2_TAMR_R = 0x00000002;   // 3) configure for periodic mode, default down-count settings
-  TIMER2_TAILR_R = period-1;    // 4) reload value
-  TIMER2_TAPR_R = 0;            // 5) bus clock resolution
-  TIMER2_ICR_R = 0x00000001;    // 6) clear timer2A timeout flag
-  TIMER2_IMR_R = 0x00000001;    // 7) arm timeout interrupt
+  TIMER2_CTL_R = 0x00000000;
+  TIMER2_CFG_R = 0x00000000;
+  TIMER2_TAMR_R = 0x00000002;
+  TIMER2_TAILR_R = period-1;
+  TIMER2_TAPR_R = 0;
+  TIMER2_ICR_R = 0x00000001;
+  TIMER2_IMR_R = 0x00000001;
   NVIC_PRI5_R = (NVIC_PRI5_R&0x00FFFFFF)|0x80000000; // 8) priority 4
-// interrupts enabled in the main program after all devices initialized
-// vector number 39, interrupt number 23
-  NVIC_EN0_R = 1<<23;           // 9) enable IRQ 23 in NVIC
-  //TIMER2_CTL_R = 0x00000001;    // 10) enable timer2A
+  NVIC_EN0_R = 1<<23;
 }
 void Timer2A_Handler(void){
-  TIMER2_ICR_R = 0x00000001;   // acknowledge timer2A timeout
+  TIMER2_ICR_R = 0x00000001;
   TimerCount++;
 	if(SampleCount>0){
-		DACOut(music[Index]); //samples[0.....SIZE]
+		DACOut(music[Index]);
 		SampleCount--;
 		Index++;
 	}
@@ -77,7 +66,7 @@ void Timer2A_Handler(void){
 }
 void GameSound_Init(void){
 	DACInit();
-	Timer2_Init(7272); //3.4kHz 23529, 11kHz: 7272
+	Timer2_Init(7272); //11kHz
 }
 void GameSound_Play(const char* p){
 	if(strcmp(p,"PLAYER_SHOOT")==0){

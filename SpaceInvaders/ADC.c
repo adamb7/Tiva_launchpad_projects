@@ -1,10 +1,8 @@
 #include "ADC.h"
 #include "..//tm4c123gh6pm.h"
 
-// Slide pot pin 2 connected to PE2/AIN1
-// Sample sequencer 3 is being used
-unsigned long delay;
 void ADC_Init(void){
+	unsigned long delay;
 	SYSCTL_RCGC2_R			|=	0x10;
 	SYSCTL_RCGCGPIO_R  	|= 	0x10;
 	delay = SYSCTL_RCGCGPIO_R;
@@ -14,15 +12,14 @@ void ADC_Init(void){
 	GPIO_PORTE_AFSEL_R 	|= 	0x4;
 	SYSCTL_RCGCADC_R 		|=	0x01;
 	delay= SYSCTL_RCGCADC_R;
-	SYSCTL_RCGC0_R 			|= 	0x10000;		//ss3 clock
+	SYSCTL_RCGC0_R 			|= 	0x10000;
 	delay = SYSCTL_RCGC0_R;
-	ADC0_SSPRI_R 				= 	0x0123; //ss3 top prio
-	ADC0_ACTSS_R				&= 	~0x08;	//stop
-	ADC0_EMUX_R					&= 	~0xF000; //processor trigger will start SS3
-	ADC0_SSMUX3_R				= 	0x1;	//sample comes from Ain1
-	ADC0_SSCTL3_R 			= 	0x6;	//enable interrupt generation(assert INR0 bit at the end of this sample conversion), and end of sequence bit
-	//ADC0_IM_R 					=		0x00000008;	//set IR mask
-	ADC0_ACTSS_R				|= 	0x08;	//start SS3
+	ADC0_SSPRI_R 				= 	0x0123;
+	ADC0_ACTSS_R				&= 	~0x08;
+	ADC0_EMUX_R					&= 	~0xF000;
+	ADC0_SSMUX3_R				= 	0x1;
+	ADC0_SSCTL3_R 			= 	0x6;
+	ADC0_ACTSS_R				|= 	0x08;
 }
 unsigned long ADC_In(void){
 	unsigned long data;
