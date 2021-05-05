@@ -49,17 +49,17 @@ void Timer2_Init(unsigned long period){
   TIMER2_ICR_R = 0x00000001;
   TIMER2_IMR_R = 0x00000001;
   NVIC_PRI5_R = (NVIC_PRI5_R&0x00FFFFFF)|0x80000000; // 8) priority 4
-  NVIC_EN0_R = 1<<23;
+  NVIC_EN0_R = 1 << 23;
 }
 void Timer2A_Handler(void){
   TIMER2_ICR_R = 0x00000001;
   TimerCount++;
-	if(SampleCount>0){
+	if (SampleCount > 0){
 		DACOut(music[Index]);
 		SampleCount--;
 		Index++;
 	}
-	else{
+	else {
 		DACOut(0);
 		Timer2A_Stop();
 	}
@@ -69,21 +69,21 @@ void GameSound_Init(void){
 	Timer2_Init(7272); //11kHz
 }
 void GameSound_Play(const char* p){
-	if(strcmp(p,"PLAYER_SHOOT")==0){
-		music=Shoot;
-		Index=0;
+	if (strcmp(p, "PLAYER_SHOOT") == 0){
+		music = Shoot;
+		Index = 0;
 		SampleCount = SHOOT_SIZE;
 		Timer2A_Start();
 	}
-	if(strcmp(p,"PLAYER_KILLED")==0){
-		music=Explosion;
-		Index=0;
+	if (strcmp(p, "PLAYER_KILLED") == 0){
+		music = Explosion;
+		Index = 0;
 		SampleCount = EXPLOSION_SIZE;
 		Timer2A_Start();
 	}
-	if(strcmp(p,"ENEMY_KILLED")==0){
-		music=InvaderKilled;
-		Index=0;
+	if (strcmp(p, "ENEMY_KILLED") == 0){
+		music = InvaderKilled;
+		Index = 0;
 		SampleCount = INVADERKILLED_SIZE;
 		Timer2A_Start();
 	}
