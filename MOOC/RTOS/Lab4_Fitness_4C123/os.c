@@ -365,22 +365,19 @@ void OS_EdgeTrigger_Init(int32_t *semaPt, uint8_t priority){
 // 6) disable alt funct on PD6
 // disable pull-up on PD6
 // 7) enable digital I/O on PD6
-	BSP_Button1_Init();  
 // (d) PD6 is edge-sensitive 
 //     PD6 is not both edges 
 //     PD6 is falling edge event
-	
+// (e) clear PD6 flag
+// (f) arm interrupt on PD6	
+// priority on Port D edge trigger is NVIC_PRI0_R	31 – 29
+// enable is bit 3 in NVIC_EN0_R
+	BSP_Button1_Init();
 	GPIO_PORTD_IS_R &= ~(1UL << 6);
 	GPIO_PORTD_IBE_R &= ~(1UL << 6);
 	GPIO_PORTD_IEV_R &= ~(1UL << 6);
-	
-// (e) clear PD6 flag
-// (f) arm interrupt on PD6
 	GPIO_PORTD_ICR_R|= (1UL << 6);
 	GPIO_PORTD_IM_R |= (1UL << 6);
-	
-// priority on Port D edge trigger is NVIC_PRI0_R	31 – 29
-// enable is bit 3 in NVIC_EN0_R
 	NVIC_PRI0_R|= (NVIC_PRI0_R&0x1FFFFFFF)|(priority << 29);
 	NVIC_EN0_R |= (1U << 3);
  }
@@ -393,8 +390,8 @@ void OS_EdgeTrigger_Init(int32_t *semaPt, uint8_t priority){
 void OS_EdgeTrigger_Restart(void){
 //***IMPLEMENT THIS***
 // rearm interrupt 3 in NVIC
-	GPIO_PORTD_IM_R |= (1UL << 6);
 // clear flag6
+	GPIO_PORTD_IM_R |= (1UL << 6);
 	GPIO_PORTD_ICR_R|= (1UL << 6);
 }
 void GPIOPortD_Handler(void){
