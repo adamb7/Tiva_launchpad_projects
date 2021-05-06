@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\SpaceInvaders.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\SpaceInvaders.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Wed May 05 01:35:12 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Thu May 06 17:05:31 2021
 <BR><P>
 <H3>Maximum Stack Usage =         76 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-SysTick_Handler &rArr; PlayerMissile_Draw &rArr; checkHit &rArr; Nokia5110_PrintBMP
+SysTick_Handler &rArr; DrawPlayerMissile &rArr; CheckMissileHit &rArr; Nokia5110_PrintBMP
 <P>
 <H3>
 Functions with no stack information
@@ -19,9 +19,9 @@ Functions with no stack information
  <LI><a href="#[f2]">EndCritical</a>
  <LI><a href="#[f3]">WaitForInterrupt</a>
  <LI><a href="#[90]">__user_initial_stackheap</a>
- <LI><a href="#[9f]">Random_Init</a>
+ <LI><a href="#[a1]">Random_Init</a>
  <LI><a href="#[f4]">Random32</a>
- <LI><a href="#[9b]">Random</a>
+ <LI><a href="#[c8]">Random</a>
 </UL>
 </UL>
 <P>
@@ -671,7 +671,7 @@ Global Symbols
 
 <P><STRONG><a name="[88]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64 + Unknown Stack Size
-<LI>Call Chain = __rt_entry_main &rArr; main &rArr; Reset_Game &rArr; Update_LCD &rArr; Display_Score &rArr; Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
+<LI>Call Chain = __rt_entry_main &rArr; main &rArr; ResetGame &rArr; UpdateScreen &rArr; DisplayScore &rArr; Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -707,21 +707,21 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__user_setup_stackheap
 </UL>
 
-<P><STRONG><a name="[9f]"></a>Random_Init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, random.o(.text))
+<P><STRONG><a name="[a1]"></a>Random_Init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, random.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPortE_Handler
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
 </UL>
 
 <P><STRONG><a name="[f4]"></a>Random32</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, random.o(.text), UNUSED)
 
-<P><STRONG><a name="[9b]"></a>Random</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, random.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy_Attack
+<P><STRONG><a name="[c8]"></a>Random</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, random.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TriggerEnemyAttack
 </UL>
 
-<P><STRONG><a name="[a3]"></a>strcmp</STRONG> (Thumb, 128 bytes, Stack size 0 bytes, strcmpv7m.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Play
+<P><STRONG><a name="[a5]"></a>strcmp</STRONG> (Thumb, 128 bytes, Stack size 0 bytes, strcmpv7m.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Play
 </UL>
 
 <P><STRONG><a name="[f5]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
@@ -764,17 +764,17 @@ Global Symbols
 
 <P><STRONG><a name="[fc]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[c8]"></a>ADC1_In</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, texas.o(i.ADC1_In))
+<P><STRONG><a name="[c7]"></a>ADC1_In</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, texas.o(i.ADC1_In))
 <BR><BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer5A_Handler
 </UL>
 
-<P><STRONG><a name="[c5]"></a>ADC1_Init</STRONG> (Thumb, 174 bytes, Stack size 8 bytes, texas.o(i.ADC1_Init))
+<P><STRONG><a name="[c4]"></a>ADC1_Init</STRONG> (Thumb, 174 bytes, Stack size 8 bytes, texas.o(i.ADC1_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = ADC1_Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+<BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
 </UL>
 
-<P><STRONG><a name="[bb]"></a>ADC_In</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, adc.o(i.ADC_In))
+<P><STRONG><a name="[b9]"></a>ADC_In</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, adc.o(i.ADC_In))
 <BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
@@ -782,47 +782,42 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[92]"></a>Bunker_Draw</STRONG> (Thumb, 94 bytes, Stack size 16 bytes, spaceinvaders.o(i.Bunker_Draw))
-<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = Bunker_Draw &rArr; Nokia5110_PrintBMP
+<P><STRONG><a name="[92]"></a>CheckMissileHit</STRONG> (Thumb, 340 bytes, Stack size 16 bytes, spaceinvaders.o(i.CheckMissileHit))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = CheckMissileHit &rArr; Nokia5110_PrintBMP
 </UL>
 <BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawPlayerMissile
 </UL>
 
-<P><STRONG><a name="[b5]"></a>Bunker_Init</STRONG> (Thumb, 116 bytes, Stack size 0 bytes, spaceinvaders.o(i.Bunker_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<P><STRONG><a name="[a3]"></a>DAC_Init</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, gamesound.o(i.DAC_Init))
+<BR><BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Init
 </UL>
 
-<P><STRONG><a name="[a1]"></a>DACInit</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, gamesound.o(i.DACInit))
-<BR><BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Init
-</UL>
-
-<P><STRONG><a name="[c6]"></a>DACOut</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, gamesound.o(i.DACOut))
+<P><STRONG><a name="[c5]"></a>DAC_Out</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, gamesound.o(i.DAC_Out))
 <BR><BR>[Called By]<UL><LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer2A_Handler
 </UL>
 
-<P><STRONG><a name="[9e]"></a>Delay100ms</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, spaceinvaders.o(i.Delay100ms))
+<P><STRONG><a name="[a0]"></a>Delay100ms</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, spaceinvaders.o(i.Delay100ms))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Delay100ms
 </UL>
 <BR>[Called By]<UL><LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPortE_Handler
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[94]"></a>Display_Score</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, spaceinvaders.o(i.Display_Score))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Display_Score &rArr; Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
+<P><STRONG><a name="[94]"></a>DisplayScore</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, spaceinvaders.o(i.DisplayScore))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = DisplayScore &rArr; Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
 </UL>
 <BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_SetCursor
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutUDec
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutString
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Update_LCD
+<LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UpdateScreen
 </UL>
 
-<P><STRONG><a name="[98]"></a>Display_StartScreen</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, spaceinvaders.o(i.Display_StartScreen))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Display_StartScreen &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
+<P><STRONG><a name="[98]"></a>DisplayStartScreen</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, spaceinvaders.o(i.DisplayStartScreen))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = DisplayStartScreen &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
 </UL>
 <BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_SetCursor
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutString
@@ -830,50 +825,49 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[99]"></a>EnemyMissile_Draw</STRONG> (Thumb, 614 bytes, Stack size 16 bytes, spaceinvaders.o(i.EnemyMissile_Draw))
-<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = EnemyMissile_Draw &rArr; Nokia5110_PrintBMP
+<P><STRONG><a name="[99]"></a>DrawBunker</STRONG> (Thumb, 94 bytes, Stack size 16 bytes, spaceinvaders.o(i.DrawBunker))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = DrawBunker &rArr; Nokia5110_PrintBMP
+</UL>
+<BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
+</UL>
+<BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
+</UL>
+
+<P><STRONG><a name="[9a]"></a>DrawEnemy</STRONG> (Thumb, 398 bytes, Stack size 16 bytes, spaceinvaders.o(i.DrawEnemy))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = DrawEnemy &rArr; Nokia5110_PrintBMP
+</UL>
+<BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Play
+<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
+</UL>
+<BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
+</UL>
+
+<P><STRONG><a name="[9c]"></a>DrawEnemyMissile</STRONG> (Thumb, 614 bytes, Stack size 16 bytes, spaceinvaders.o(i.DrawEnemyMissile))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = DrawEnemyMissile &rArr; Nokia5110_PrintBMP
 </UL>
 <BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
-<P><STRONG><a name="[b4]"></a>EnemyMissile_Init</STRONG> (Thumb, 68 bytes, Stack size 0 bytes, spaceinvaders.o(i.EnemyMissile_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<P><STRONG><a name="[9d]"></a>DrawPlayer</STRONG> (Thumb, 94 bytes, Stack size 8 bytes, spaceinvaders.o(i.DrawPlayer))
+<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = DrawPlayer &rArr; Nokia5110_PrintBMP
 </UL>
-
-<P><STRONG><a name="[be]"></a>EnemyMissile_Move</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, spaceinvaders.o(i.EnemyMissile_Move))
-<BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-</UL>
-
-<P><STRONG><a name="[9a]"></a>Enemy_Attack</STRONG> (Thumb, 296 bytes, Stack size 16 bytes, spaceinvaders.o(i.Enemy_Attack))
-<BR><BR>[Stack]<UL><LI>Max Depth = 52 + Unknown Stack Size
-<LI>Call Chain = Enemy_Attack &rArr; Nokia5110_PrintBMP
-</UL>
-<BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Random
+<BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Play
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
 </UL>
 
-<P><STRONG><a name="[9c]"></a>Enemy_Draw</STRONG> (Thumb, 398 bytes, Stack size 16 bytes, spaceinvaders.o(i.Enemy_Draw))
-<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = Enemy_Draw &rArr; Nokia5110_PrintBMP
+<P><STRONG><a name="[9e]"></a>DrawPlayerMissile</STRONG> (Thumb, 308 bytes, Stack size 16 bytes, spaceinvaders.o(i.DrawPlayerMissile))
+<BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = DrawPlayerMissile &rArr; CheckMissileHit &rArr; Nokia5110_PrintBMP
 </UL>
-<BR>[Calls]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Play
+<BR>[Calls]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MissileIsCloseToEnemy
+<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CheckMissileHit
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
-</UL>
-<BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
-</UL>
-
-<P><STRONG><a name="[b2]"></a>Enemy_Init</STRONG> (Thumb, 356 bytes, Stack size 8 bytes, spaceinvaders.o(i.Enemy_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Enemy_Init
-</UL>
-<BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
-</UL>
-
-<P><STRONG><a name="[bf]"></a>Enemy_Move</STRONG> (Thumb, 784 bytes, Stack size 12 bytes, spaceinvaders.o(i.Enemy_Move))
-<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Enemy_Move
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
@@ -882,80 +876,128 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16 + Unknown Stack Size
 <LI>Call Chain = GPIOPortE_Handler &rArr; Delay100ms
 </UL>
-<BR>[Calls]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay100ms
-<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Random_Init
+<BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay100ms
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Random_Init
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
-<P><STRONG><a name="[a0]"></a>GameSound_Init</STRONG> (Thumb, 16 bytes, Stack size 4 bytes, gamesound.o(i.GameSound_Init))
+<P><STRONG><a name="[a2]"></a>GameSound_Init</STRONG> (Thumb, 16 bytes, Stack size 4 bytes, gamesound.o(i.GameSound_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = GameSound_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer2_Init
-<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DACInit
+<BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer2_Init
+<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DAC_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[9d]"></a>GameSound_Play</STRONG> (Thumb, 108 bytes, Stack size 8 bytes, gamesound.o(i.GameSound_Play))
+<P><STRONG><a name="[9b]"></a>GameSound_Play</STRONG> (Thumb, 108 bytes, Stack size 8 bytes, gamesound.o(i.GameSound_Play))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = GameSound_Play
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcmp
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer2A_Start
+<BR>[Calls]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcmp
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer2A_Start
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Draw
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy_Draw
+<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawPlayer
+<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawEnemy
 </UL>
 
-<P><STRONG><a name="[b9]"></a>IntInit</STRONG> (Thumb, 52 bytes, Stack size 0 bytes, switch.o(i.IntInit))
-<BR><BR>[Called By]<UL><LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Switch_Init
+<P><STRONG><a name="[b3]"></a>InitBunker</STRONG> (Thumb, 116 bytes, Stack size 0 bytes, spaceinvaders.o(i.InitBunker))
+<BR><BR>[Called By]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
 </UL>
 
-<P><STRONG><a name="[a5]"></a>Nokia5110_Clear</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, nokia5110.o(i.Nokia5110_Clear))
+<P><STRONG><a name="[b0]"></a>InitEnemy</STRONG> (Thumb, 356 bytes, Stack size 8 bytes, spaceinvaders.o(i.InitEnemy))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = InitEnemy
+</UL>
+<BR>[Called By]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
+</UL>
+
+<P><STRONG><a name="[b2]"></a>InitEnemyMissile</STRONG> (Thumb, 68 bytes, Stack size 0 bytes, spaceinvaders.o(i.InitEnemyMissile))
+<BR><BR>[Called By]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
+</UL>
+
+<P><STRONG><a name="[b4]"></a>InitPause</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, spaceinvaders.o(i.InitPause))
+<BR><BR>[Called By]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
+</UL>
+
+<P><STRONG><a name="[af]"></a>InitPlayer</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, spaceinvaders.o(i.InitPlayer))
+<BR><BR>[Called By]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
+</UL>
+
+<P><STRONG><a name="[b1]"></a>InitPlayerMissile</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, spaceinvaders.o(i.InitPlayerMissile))
+<BR><BR>[Called By]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
+</UL>
+
+<P><STRONG><a name="[b7]"></a>InterruptInit</STRONG> (Thumb, 52 bytes, Stack size 0 bytes, switch.o(i.InterruptInit))
+<BR><BR>[Called By]<UL><LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Switch_Init
+</UL>
+
+<P><STRONG><a name="[9f]"></a>MissileIsCloseToEnemy</STRONG> (Thumb, 168 bytes, Stack size 0 bytes, spaceinvaders.o(i.MissileIsCloseToEnemy))
+<BR><BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawPlayerMissile
+</UL>
+
+<P><STRONG><a name="[bd]"></a>MoveEnemy</STRONG> (Thumb, 784 bytes, Stack size 12 bytes, spaceinvaders.o(i.MoveEnemy))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = MoveEnemy
+</UL>
+<BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
+</UL>
+
+<P><STRONG><a name="[bc]"></a>MoveEnemyMissile</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, spaceinvaders.o(i.MoveEnemyMissile))
+<BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
+</UL>
+
+<P><STRONG><a name="[bb]"></a>MovePlayer</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, spaceinvaders.o(i.MovePlayer))
+<BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
+</UL>
+
+<P><STRONG><a name="[ba]"></a>MovePlayerMissile</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, spaceinvaders.o(i.MovePlayerMissile))
+<BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
+</UL>
+
+<P><STRONG><a name="[a7]"></a>Nokia5110_Clear</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, nokia5110.o(i.Nokia5110_Clear))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Nokia5110_Clear &rArr; Nokia5110_SetCursor
 </UL>
 <BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_SetCursor
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdwrite
+<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdwrite
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
 </UL>
 
-<P><STRONG><a name="[b0]"></a>Nokia5110_ClearBuffer</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, nokia5110.o(i.Nokia5110_ClearBuffer))
+<P><STRONG><a name="[ae]"></a>Nokia5110_ClearBuffer</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, nokia5110.o(i.Nokia5110_ClearBuffer))
 <BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
 </UL>
 
-<P><STRONG><a name="[a7]"></a>Nokia5110_DisplayBuffer</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, nokia5110.o(i.Nokia5110_DisplayBuffer))
+<P><STRONG><a name="[a9]"></a>Nokia5110_DisplayBuffer</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, nokia5110.o(i.Nokia5110_DisplayBuffer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = Nokia5110_DisplayBuffer &rArr; Nokia5110_DrawFullImage &rArr; Nokia5110_SetCursor
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DrawFullImage
+<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DrawFullImage
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Update_LCD
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
+<BR>[Called By]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UpdateScreen
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
 </UL>
 
-<P><STRONG><a name="[a8]"></a>Nokia5110_DrawFullImage</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, nokia5110.o(i.Nokia5110_DrawFullImage))
+<P><STRONG><a name="[aa]"></a>Nokia5110_DrawFullImage</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, nokia5110.o(i.Nokia5110_DrawFullImage))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Nokia5110_DrawFullImage &rArr; Nokia5110_SetCursor
 </UL>
 <BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_SetCursor
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdwrite
+<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdwrite
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DisplayBuffer
+<BR>[Called By]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DisplayBuffer
 </UL>
 
-<P><STRONG><a name="[a9]"></a>Nokia5110_Init</STRONG> (Thumb, 316 bytes, Stack size 8 bytes, nokia5110.o(i.Nokia5110_Init))
+<P><STRONG><a name="[ab]"></a>Nokia5110_Init</STRONG> (Thumb, 316 bytes, Stack size 8 bytes, nokia5110.o(i.Nokia5110_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Nokia5110_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdwrite
+<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdwrite
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[aa]"></a>Nokia5110_OutChar</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, nokia5110.o(i.Nokia5110_OutChar))
+<P><STRONG><a name="[ac]"></a>Nokia5110_OutChar</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, nokia5110.o(i.Nokia5110_OutChar))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Nokia5110_OutChar
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdwrite
+<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdwrite
 </UL>
 <BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutUDec
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutString
@@ -964,11 +1006,11 @@ Global Symbols
 <P><STRONG><a name="[96]"></a>Nokia5110_OutString</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, nokia5110.o(i.Nokia5110_OutString))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Nokia5110_OutString &rArr; Nokia5110_OutChar
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutChar
+<BR>[Calls]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutChar
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_StartScreen
-<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_Score
+<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayStartScreen
+<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayScore
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutUDec
 </UL>
 
@@ -976,145 +1018,105 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutString
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutChar
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutChar
 </UL>
-<BR>[Called By]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_Score
+<BR>[Called By]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayScore
 </UL>
 
 <P><STRONG><a name="[93]"></a>Nokia5110_PrintBMP</STRONG> (Thumb, 420 bytes, Stack size 36 bytes, nokia5110.o(i.Nokia5110_PrintBMP))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = Nokia5110_PrintBMP
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkHit
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Draw
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayerMissile_Draw
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy_Draw
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy_Attack
-<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EnemyMissile_Draw
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bunker_Draw
+<BR>[Called By]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TriggerEnemyAttack
+<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawPlayerMissile
+<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawPlayer
+<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawEnemyMissile
+<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawEnemy
+<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawBunker
+<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CheckMissileHit
 </UL>
 
 <P><STRONG><a name="[95]"></a>Nokia5110_SetCursor</STRONG> (Thumb, 48 bytes, Stack size 16 bytes, nokia5110.o(i.Nokia5110_SetCursor))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Nokia5110_SetCursor
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdwrite
+<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdwrite
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_StartScreen
-<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_Score
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DrawFullImage
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Clear
+<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayStartScreen
+<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayScore
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DrawFullImage
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Clear
 </UL>
 
-<P><STRONG><a name="[c1]"></a>PLL_Init</STRONG> (Thumb, 118 bytes, Stack size 0 bytes, texas.o(i.PLL_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+<P><STRONG><a name="[c0]"></a>PLL_Init</STRONG> (Thumb, 118 bytes, Stack size 0 bytes, texas.o(i.PLL_Init))
+<BR><BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
 </UL>
 
-<P><STRONG><a name="[b6]"></a>Pause_Init</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, spaceinvaders.o(i.Pause_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
-</UL>
-
-<P><STRONG><a name="[ab]"></a>PlayerMissile_Draw</STRONG> (Thumb, 308 bytes, Stack size 16 bytes, spaceinvaders.o(i.PlayerMissile_Draw))
-<BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = PlayerMissile_Draw &rArr; checkHit &rArr; Nokia5110_PrintBMP
-</UL>
-<BR>[Calls]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;missileCloseToEnemy
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkHit
-<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
-</UL>
-<BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-</UL>
-
-<P><STRONG><a name="[b3]"></a>PlayerMissile_Init</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, spaceinvaders.o(i.PlayerMissile_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
-</UL>
-
-<P><STRONG><a name="[bc]"></a>PlayerMissile_Move</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, spaceinvaders.o(i.PlayerMissile_Move))
-<BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-</UL>
-
-<P><STRONG><a name="[ae]"></a>Player_Draw</STRONG> (Thumb, 94 bytes, Stack size 8 bytes, spaceinvaders.o(i.Player_Draw))
-<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = Player_Draw &rArr; Nokia5110_PrintBMP
-</UL>
-<BR>[Calls]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Play
-<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
-</UL>
-<BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
-</UL>
-
-<P><STRONG><a name="[b1]"></a>Player_Init</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, spaceinvaders.o(i.Player_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
-</UL>
-
-<P><STRONG><a name="[bd]"></a>Player_Move</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, spaceinvaders.o(i.Player_Move))
-<BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
-</UL>
-
-<P><STRONG><a name="[af]"></a>Reset_Game</STRONG> (Thumb, 66 bytes, Stack size 8 bytes, spaceinvaders.o(i.Reset_Game))
+<P><STRONG><a name="[ad]"></a>ResetGame</STRONG> (Thumb, 66 bytes, Stack size 8 bytes, spaceinvaders.o(i.ResetGame))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64 + Unknown Stack Size
-<LI>Call Chain = Reset_Game &rArr; Update_LCD &rArr; Display_Score &rArr; Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
+<LI>Call Chain = ResetGame &rArr; UpdateScreen &rArr; DisplayScore &rArr; Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Update_LCD
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Init
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Draw
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayerMissile_Init
-<LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Pause_Init
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy_Init
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy_Draw
-<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EnemyMissile_Init
-<LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bunker_Init
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bunker_Draw
-<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Random_Init
-<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DisplayBuffer
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_ClearBuffer
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Clear
+<BR>[Calls]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UpdateScreen
+<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPlayerMissile
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPlayer
+<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPause
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitEnemyMissile
+<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitEnemy
+<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitBunker
+<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawPlayer
+<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawEnemy
+<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawBunker
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Random_Init
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DisplayBuffer
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_ClearBuffer
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Clear
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[cb]"></a>Reset_Score</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, spaceinvaders.o(i.Reset_Score))
+<P><STRONG><a name="[cb]"></a>ResetScore</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, spaceinvaders.o(i.ResetScore))
 <BR><BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[c4]"></a>SetCode</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, texas.o(i.SetCode))
-<BR><BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+<P><STRONG><a name="[c3]"></a>SetCode</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, texas.o(i.SetCode))
+<BR><BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
 </UL>
 
-<P><STRONG><a name="[c2]"></a>SetCourse</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, texas.o(i.SetCourse))
-<BR><BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+<P><STRONG><a name="[c1]"></a>SetCourse</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, texas.o(i.SetCourse))
+<BR><BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
 </UL>
 
-<P><STRONG><a name="[b8]"></a>Switch_Init</STRONG> (Thumb, 92 bytes, Stack size 4 bytes, switch.o(i.Switch_Init))
+<P><STRONG><a name="[b6]"></a>Switch_Init</STRONG> (Thumb, 92 bytes, Stack size 4 bytes, switch.o(i.Switch_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Switch_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IntInit
+<BR>[Calls]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InterruptInit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[ba]"></a>Switch_Read</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, switch.o(i.Switch_Read))
+<P><STRONG><a name="[b8]"></a>Switch_Read</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, switch.o(i.Switch_Read))
 <BR><BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
 <P><STRONG><a name="[c]"></a>SysTick_Handler</STRONG> (Thumb, 164 bytes, Stack size 8 bytes, spaceinvaders.o(i.SysTick_Handler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76 + Unknown Stack Size
-<LI>Call Chain = SysTick_Handler &rArr; PlayerMissile_Draw &rArr; checkHit &rArr; Nokia5110_PrintBMP
+<LI>Call Chain = SysTick_Handler &rArr; DrawPlayerMissile &rArr; CheckMissileHit &rArr; Nokia5110_PrintBMP
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Switch_Read
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Play
-<LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_In
-<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Move
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Player_Draw
-<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayerMissile_Move
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayerMissile_Draw
-<LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy_Move
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy_Draw
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Enemy_Attack
-<LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EnemyMissile_Move
-<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EnemyMissile_Draw
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bunker_Draw
-<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Random_Init
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_ClearBuffer
+<BR>[Calls]<UL><LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Switch_Read
+<LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Play
+<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_In
+<LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TriggerEnemyAttack
+<LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MovePlayerMissile
+<LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MovePlayer
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MoveEnemyMissile
+<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MoveEnemy
+<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawPlayerMissile
+<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawPlayer
+<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawEnemyMissile
+<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawEnemy
+<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawBunker
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Random_Init
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_ClearBuffer
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
@@ -1122,14 +1124,14 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[c0]"></a>TExaS_Init</STRONG> (Thumb, 324 bytes, Stack size 8 bytes, texas.o(i.TExaS_Init))
+<P><STRONG><a name="[bf]"></a>TExaS_Init</STRONG> (Thumb, 324 bytes, Stack size 8 bytes, texas.o(i.TExaS_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TExaS_Init &rArr; UART0_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_Init
-<LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetCourse
-<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetCode
-<LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PLL_Init
-<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC1_Init
+<BR>[Calls]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_Init
+<LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetCourse
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetCode
+<LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PLL_Init
+<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC1_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1137,21 +1139,21 @@ Global Symbols
 <P><STRONG><a name="[24]"></a>Timer2A_Handler</STRONG> (Thumb, 72 bytes, Stack size 4 bytes, gamesound.o(i.Timer2A_Handler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Timer2A_Handler
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer2A_Stop
-<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DACOut
+<BR>[Calls]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer2A_Stop
+<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DAC_Out
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
-<P><STRONG><a name="[a4]"></a>Timer2A_Start</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, gamesound.o(i.Timer2A_Start))
-<BR><BR>[Called By]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Play
+<P><STRONG><a name="[a6]"></a>Timer2A_Start</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, gamesound.o(i.Timer2A_Start))
+<BR><BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Play
 </UL>
 
-<P><STRONG><a name="[c7]"></a>Timer2A_Stop</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, gamesound.o(i.Timer2A_Stop))
+<P><STRONG><a name="[c6]"></a>Timer2A_Stop</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, gamesound.o(i.Timer2A_Stop))
 <BR><BR>[Called By]<UL><LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer2A_Handler
 </UL>
 
-<P><STRONG><a name="[a2]"></a>Timer2_Init</STRONG> (Thumb, 72 bytes, Stack size 0 bytes, gamesound.o(i.Timer2_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Init
+<P><STRONG><a name="[a4]"></a>Timer2_Init</STRONG> (Thumb, 72 bytes, Stack size 0 bytes, gamesound.o(i.Timer2_Init))
+<BR><BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Init
 </UL>
 
 <P><STRONG><a name="[4f]"></a>Timer4A_Handler</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, texas.o(i.Timer4A_Handler))
@@ -1160,72 +1162,70 @@ Global Symbols
 <P><STRONG><a name="[51]"></a>Timer5A_Handler</STRONG> (Thumb, 34 bytes, Stack size 4 bytes, texas.o(i.Timer5A_Handler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Timer5A_Handler
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC1_In
+<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC1_In
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
-<P><STRONG><a name="[c3]"></a>UART0_Init</STRONG> (Thumb, 160 bytes, Stack size 8 bytes, texas.o(i.UART0_Init))
+<P><STRONG><a name="[be]"></a>TriggerEnemyAttack</STRONG> (Thumb, 296 bytes, Stack size 16 bytes, spaceinvaders.o(i.TriggerEnemyAttack))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52 + Unknown Stack Size
+<LI>Call Chain = TriggerEnemyAttack &rArr; Nokia5110_PrintBMP
+</UL>
+<BR>[Calls]<UL><LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Random
+<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
+</UL>
+<BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
+</UL>
+
+<P><STRONG><a name="[c2]"></a>UART0_Init</STRONG> (Thumb, 160 bytes, Stack size 8 bytes, texas.o(i.UART0_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = UART0_Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+<BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
 </UL>
 
-<P><STRONG><a name="[b7]"></a>Update_LCD</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, spaceinvaders.o(i.Update_LCD))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = Update_LCD &rArr; Display_Score &rArr; Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
+<P><STRONG><a name="[b5]"></a>UpdateScreen</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, spaceinvaders.o(i.UpdateScreen))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = UpdateScreen &rArr; DisplayScore &rArr; Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
 </UL>
-<BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_Score
-<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DisplayBuffer
+<BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayScore
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DisplayBuffer
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
-</UL>
-
-<P><STRONG><a name="[ad]"></a>checkHit</STRONG> (Thumb, 340 bytes, Stack size 16 bytes, spaceinvaders.o(i.checkHit))
-<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = checkHit &rArr; Nokia5110_PrintBMP
-</UL>
-<BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_PrintBMP
-</UL>
-<BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayerMissile_Draw
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
 </UL>
 
 <P><STRONG><a name="[89]"></a>main</STRONG> (Thumb, 266 bytes, Stack size 0 bytes, spaceinvaders.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64 + Unknown Stack Size
-<LI>Call Chain = main &rArr; Reset_Game &rArr; Update_LCD &rArr; Display_Score &rArr; Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
+<LI>Call Chain = main &rArr; ResetGame &rArr; UpdateScreen &rArr; DisplayScore &rArr; Nokia5110_OutUDec &rArr; Nokia5110_OutString &rArr; Nokia5110_OutChar
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
-<LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Switch_Read
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Switch_Init
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Init
+<BR>[Calls]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Switch_Read
+<LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Switch_Init
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GameSound_Init
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Init
-<LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Update_LCD
+<LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UpdateScreen
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Systick_Init
-<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Score
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Game
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_StartScreen
-<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Display_Score
-<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay100ms
-<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Random_Init
+<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetScore
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetGame
+<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayStartScreen
+<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayScore
+<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay100ms
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Random_Init
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_SetCursor
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutString
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Init
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Clear
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Init
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Clear
 </UL>
 <BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
-</UL>
-
-<P><STRONG><a name="[ac]"></a>missileCloseToEnemy</STRONG> (Thumb, 168 bytes, Stack size 0 bytes, spaceinvaders.o(i.missileCloseToEnemy))
-<BR><BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PlayerMissile_Draw
 </UL>
 <P>
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[a6]"></a>lcdwrite</STRONG> (Thumb, 66 bytes, Stack size 0 bytes, nokia5110.o(i.lcdwrite))
+<P><STRONG><a name="[a8]"></a>lcdwrite</STRONG> (Thumb, 66 bytes, Stack size 0 bytes, nokia5110.o(i.lcdwrite))
 <BR><BR>[Called By]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_SetCursor
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutChar
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Init
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DrawFullImage
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Clear
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_OutChar
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Init
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_DrawFullImage
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Nokia5110_Clear
 </UL>
 <P>
 <H3>

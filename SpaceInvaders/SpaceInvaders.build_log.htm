@@ -7,11 +7,63 @@ C:\Keil\Labware\SpaceInvaders\SpaceInvaders.uvproj
 Project File Date:  04/12/2021
 
 <h2>Output:</h2>
-Build target 'SpaceInvaders'
+Rebuild target 'SpaceInvaders'
+assembling startup.s...
+compiling Nokia5110.c...
+assembling random.s...
 compiling SpaceInvaders.c...
+compiling TExaS.c...
+compiling ADC.c...
+ADC.c(5): warning:  #550-D: variable "delay" was set but never used
+        unsigned long delay;
+ADC.c: 1 warning, 0 errors
+compiling Switch.c...
+compiling GameSound.c...
+GameSound.c(19): warning:  #550-D: variable "delay" was set but never used
+        unsigned long delay;
+GameSound.c(38): warning:  #550-D: variable "delay" was set but never used
+    unsigned long delay;
+GameSound.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=9928 RO-data=21472 RW-data=396 ZI-data=2156  
-".\SpaceInvaders.axf" - 0 Error(s), 0 Warning(s).
+Program Size: Code=9928 RO-data=21472 RW-data=400 ZI-data=2160  
+".\SpaceInvaders.axf" - 0 Error(s), 3 Warning(s).
 </pre>
 </body>
 </html>
+_R      |=      0x4;
+ADC.c(12): error:  #20: identifier "GPIO_PORTE_AFSEL_R" is undefined
+        GPIO_PORTE_AFSEL_R      |=      0x4;
+ADC.c(13): error:  #20: identifier "SYSCTL_RCGCADC_R" is undefined
+        SYSCTL_RCGCADC_R                |=      0x01;
+ADC.c(15): error:  #20: identifier "SYSCTL_RCGC0_R" is undefined
+        SYSCTL_RCGC0_R                  |=      0x10000;
+ADC.c(17): error:  #20: identifier "ADC0_SSPRI_R" is undefined
+        ADC0_SSPRI_R                            =       0x0123;
+ADC.c(18): error:  #20: identifier "ADC0_ACTSS_R" is undefined
+        ADC0_ACTSS_R                            &=      ~0x08;
+ADC.c(19): error:  #20: identifier "ADC0_EMUX_R" is undefined
+        ADC0_EMUX_R                                     &=      ~0xF000;
+ADC.c(20): error:  #20: identifier "ADC0_SSMUX3_R" is undefined
+        ADC0_SSMUX3_R                           =       0x1;
+ADC.c(21): error:  #20: identifier "ADC0_SSCTL3_R" is undefined
+        ADC0_SSCTL3_R                   =       0x6;
+ADC.c(5): warning:  #550-D: variable "delay" was set but never used
+        unsigned long delay;
+ADC.c(26): error:  #20: identifier "ADC0_PSSI_R" is undefined
+        ADC0_PSSI_R |= 0x8;
+ADC.c(27): error:  #20: identifier "ADC0_RIS_R" is undefined
+        while ((ADC0_RIS_R & 0x8) == 0){ };
+ADC.c(28): error:  #20: identifier "ADC0_SSFIFO3_R" is undefined
+        data = (ADC0_SSFIFO3_R & 0xFFF);
+ADC.c(29): error:  #20: identifier "ADC0_ISC_R" is undefined
+        ADC0_ISC_R      |= 0x8;
+ADC.c: 1 warning, 17 errors
+compiling Switch.c...
+compiling GameSound.c...
+GameSound.c(21): warning:  #550-D: variable "delay" was set but never used
+        unsigned long delay;
+GameSound.c(40): warning:  #550-D: variable "delay" was set but never used
+    unsigned long delay;
+GameSound.c: 2 warnings, 0 errors
+".\SpaceInvaders.axf" - 17 Error(s), 3 Warning(s).
+Target not created

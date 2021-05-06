@@ -51,6 +51,8 @@
 // SSI0Tx        (DN,  pin 6) connected to PA5
 // SSI0Clk       (SCLK, pin 7) connected to PA2
 // back light    (LED, pin 8) not connected, consists of 4 white LEDs which draw ~80mA total
+#ifndef NOKIA5110_H
+#define NOKIA5110_H
 
 // Maximum dimensions of the LCD, although the pixels are
 // numbered from zero to (MAX-1).  Address may automatically
@@ -269,3 +271,5 @@ void Nokia5110_ClearBuffer(void);
 // outputs: none
 // assumes: LCD is in default horizontal addressing mode (V = 0)
 void Nokia5110_DisplayBuffer(void);
+
+#endif
