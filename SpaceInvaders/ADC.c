@@ -24,7 +24,7 @@ void ADC_Init(void){
 unsigned long ADC_In(void){
 	unsigned long data;
 	ADC0_PSSI_R |= 0x8;
-	while ((ADC0_RIS_R & 0x8) == 0){ };
+	while ((ADC0_RIS_R & 0x8) == 0){};
 	data = (ADC0_SSFIFO3_R & 0xFFF);
 	ADC0_ISC_R 	|= 0x8;
 	return data;

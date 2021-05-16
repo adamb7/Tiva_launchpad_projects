@@ -321,6 +321,24 @@ const unsigned char Laser1[] = {
 #define PLAYERH     ((unsigned char)PlayerShip0[22])
 #define ENEMYWIDTH 16
 #define ENEMYHEIGHT 10
+#define MOVE_RIGHT 0
+#define MOVE_LEFT 1
+#define SCREEN_RIGHT_EDGE 83
+#define SCREEN_LEFT_EDGE 0
+#define SCREEN_BOTTOM_EDGE 47
+#define SCREEN_TOP_EDGE 0
+#define SCREEN_X_MIDDLE 32
+#define PLAYER_Y_POSITION 46 - PLAYERH
+#define BUNKERS_Y_POSTION 41 - PLAYERH
+#define PLAYER_Y_CANNON_POSITION 41
+#define PLAYER_ALIVE 3
+#define PLAYER_EXPLODING_0 2
+#define PLAYER_EXPLODING_1 1
+#define PLAYER_EXPLODING_2 4
+#define PLAYER_DEAD 0
+#define ENEMY_ALIVE 2
+#define ENEMY_EXPLODING 1
+#define ENEMY_DEAD 0
 
 typedef struct {
 	signed long x;
@@ -364,13 +382,15 @@ enum gameFlags {
 } gameIs;
 
 unsigned char currentState;
-unsigned char semaphore;
-unsigned char pause;
+unsigned char triggerScreenUpdate;
+unsigned char pauseIsOn;
 unsigned char enemyMissileCount;
 unsigned short enemyStatus;
 unsigned short score;
 unsigned long playerPos;
 
+unsigned char NoSwitchIsPushed(void);
+unsigned char attackButtonIsPushed(void);
 void Systick_Init(unsigned long);
 void DisableInterrupts(void);
 void EnableInterrupts(void);
@@ -406,7 +426,7 @@ int main(void){
 	GameSound_Init();
 	ADC_Init();
 	Switch_Init();
-	semaphore = 0;
+	triggerScreenUpdate = 0;
 	Systick_Init(2666667); //30Hz
 	ResetScore();
 	gameIs = LOST;
@@ -414,13 +434,13 @@ int main(void){
 		Nokia5110_Clear();
 		if (gameIs == LOST){
 			DisplayStartScreen();
-			while ((Switch_Read() & 0x3) == 0){}
+			while (NoSwitchIsPushed()){}
 		}
 		Delay100ms(10);
 		gameIs = IN_PROGRESS;
 		ResetGame();
 		while (1){
-			while (semaphore == 0){}
+			while (triggerScreenUpdate == 0){}
 			UpdateScreen();
 			if (gameIs != IN_PROGRESS) break;
 		}	
@@ -446,9 +466,12 @@ int main(void){
 			Nokia5110_Clear();
 			DisplayScore();
 		}
-		while ((Switch_Read() & 0x3) == 0){}
+		while (NoSwitchIsPushed()){}
 		Delay100ms(5);
 	}
+}
+unsigned char NoSwitchIsPushed(void){
+	return (Switch_Read() & 0x3) == 0;
 }
 void Delay100ms(unsigned long count){
 	unsigned long volatile time;
@@ -467,19 +490,17 @@ void Systick_Init(unsigned long period){
 	NVIC_ST_CTRL_R |= 0x01;
 }
 void SysTick_Handler(void){
-	unsigned char Data;
-	Data = Switch_Read();
 	playerPos = ADC_In() / 62; //84 pixel, player width:18, 12bit ADC => [0 ; 84-18]: 66-0=66 4096/66 = 62.0606
-	if ((Data & 0x2) && (playerMissile.life == 0) && (pause == 0)){
+	if (attackButtonIsPushed() && (playerMissile.life == 0) && (pauseIsOn == 0)){
 		playerMissile.x = playerPos + 8;
-		playerMissile.y = 41;
+		playerMissile.y = PLAYER_Y_CANNON_POSITION;
 		playerMissile.life = 1;
 		if (gameIs == IN_PROGRESS){
 			GameSound_Play("PLAYER_SHOOT");
 		}
 		Random_Init(NVIC_ST_CURRENT_R);
 	}
-	if ((player.life == 3) && (enemyStatus != 0) && (pause == 0)){
+	if ((player.life == PLAYER_ALIVE) && (enemyStatus != 0) && (pauseIsOn == 0)){
 		MovePlayerMissile();
 		MovePlayer(playerPos);
 		MoveEnemyMissile();
@@ -489,14 +510,19 @@ void SysTick_Handler(void){
 	Nokia5110_ClearBuffer();
 	DrawPlayerMissile();
 	DrawEnemyMissile();
-	if (pause == 0){
+	if (pauseIsOn == 0){
 		DrawEnemy();
 	}
 	DrawPlayer();
 	DrawBunker();
-	semaphore = 1;
+	triggerScreenUpdate = 1;
 }
-unsigned char direction;
+unsigned char attackButtonIsPushed(void){
+	unsigned char Data;
+	Data = Switch_Read();
+	return (Data & 0x2);
+}
+unsigned char enemyDirection;
 unsigned char moveDown;
 void InitEnemy(void){
 	unsigned char i;
@@ -505,7 +531,7 @@ void InitEnemy(void){
 		for (j = 0; j < 4; j++){
 			enemy[i][j].x = (j * 16);
 			enemy[i][j].y = ENEMY30H - 1;
-			enemy[i][j].life = 2;
+			enemy[i][j].life = ENEMY_ALIVE;
 			if (i == 0){
 				if (j < 2){
 					enemy[i][j].image[0] = SmallEnemy30PointA;
@@ -527,7 +553,7 @@ void InitEnemy(void){
 	}
 	enemyStatus = 0xFF;
 	currentState = 0xF;
-	direction = 0;//0->move right, 1<-move left
+	enemyDirection = MOVE_RIGHT;
 	moveDown = 0;
 }
 void MoveEnemy(void){
@@ -542,9 +568,9 @@ void MoveEnemy(void){
 					enemy[i][j].y++;
 				}
 				else {
-					if (direction){
+					if (enemyDirection == MOVE_LEFT){
 						distance = enemy[i][FSM[currentState].leftBoundaryIndex].x - FSM[currentState].speed;
-						if (distance < 0){
+						if (distance < SCREEN_LEFT_EDGE){
 							enemy[i][3 - j].x -= (distance + FSM[currentState].speed);
 						}
 						else {
@@ -553,8 +579,8 @@ void MoveEnemy(void){
 					}
 					else {
 						distance = enemy[i][FSM[currentState].rightBoundaryIndex].x + ENEMYWIDTH+FSM[currentState].speed;
-						if (distance > 83){
-							enemy[i][j].x += (FSM[currentState].speed - (distance - 83));
+						if (distance > SCREEN_RIGHT_EDGE){
+							enemy[i][j].x += (FSM[currentState].speed - (distance - SCREEN_RIGHT_EDGE));
 						}
 						else {
 							enemy[i][j].x += FSM[currentState].speed;
@@ -565,20 +591,20 @@ void MoveEnemy(void){
 		}	
 		if (moveDown == 1)
 			moveDown = 0;
-		if (((enemy[0][FSM[currentState].rightBoundaryIndex].x + ENEMYWIDTH) == 83) && (direction == 0)){
+		if (((enemy[0][FSM[currentState].rightBoundaryIndex].x + ENEMYWIDTH) == SCREEN_RIGHT_EDGE) && (enemyDirection == MOVE_RIGHT)){
 			moveDown = 1;
-			direction = 1;
+			enemyDirection = MOVE_LEFT;
 		}
-		if ((enemy[0][FSM[currentState].leftBoundaryIndex].x == 0) && (direction == 1)){
+		if ((enemy[0][FSM[currentState].leftBoundaryIndex].x == SCREEN_LEFT_EDGE) && (enemyDirection == MOVE_LEFT)){
 			moveDown = 1;
-			direction = 0;
+			enemyDirection = MOVE_RIGHT;
 		}
 	}
 	
-	if ((((enemyStatus & 0x0F) > 0) && (enemy[1][0].y > (46 - PLAYERH))) || (((enemyStatus & 0xF0) > 0) && (enemy[0][0].y > (46 - PLAYERH)))){
-		player.life = 2;
+	if ((((enemyStatus & 0x0F) > 0) && (enemy[1][0].y > (PLAYER_Y_POSITION))) || (((enemyStatus & 0xF0) > 0) && (enemy[0][0].y > (PLAYER_Y_POSITION)))){
+		player.life = PLAYER_EXPLODING_0;
 	}
-	if ((((enemyStatus & 0x0F) > 0) && (enemy[1][0].y > (41 - PLAYERH))) || (((enemyStatus & 0xF0) > 0) && (enemy[0][0].y > (41 - PLAYERH)))){
+	if ((((enemyStatus & 0x0F) > 0) && (enemy[1][0].y > (BUNKERS_Y_POSTION))) || (((enemyStatus & 0xF0) > 0) && (enemy[0][0].y > (BUNKERS_Y_POSTION)))){
 		bunker[0].life = 0;
 		bunker[1].life = 0;
 		bunker[2].life = 0;
@@ -592,13 +618,13 @@ void DrawEnemy(void){
 	static unsigned char frameCount = 0;
 	for (i = 0; i < 2; i++){
 		for (j = 0; j < 4; j++){
-			if (enemy[i][j].life == 2){
+			if (enemy[i][j].life == ENEMY_ALIVE){
 				Nokia5110_PrintBMP(enemy[i][j].x, enemy[i][j].y, enemy[i][j].image[frameCount], 0);
 			}
 			else {
-				if (enemy[i][j].life == 1){
+				if (enemy[i][j].life == ENEMY_EXPLODING){
 					Nokia5110_PrintBMP(enemy[i][j].x, enemy[i][j].y, enemy[i][j].image[2], 0);
-					enemy[i][j].life = 0;
+					enemy[i][j].life = ENEMY_DEAD;
 					enemyStatus &= (~((0x80 >> (4 * i)) >> j));
 					if (enemy[i][j].image[0] == SmallEnemy30PointA) score += 30;
 					if (enemy[i][j].image[0] == SmallEnemy20PointA) score += 20;
@@ -612,31 +638,31 @@ void DrawEnemy(void){
 	frameCount = (frameCount + 1) & 0x01;
 }
 void InitPlayer(void){
-	player.x = 32;
-	player.y = 47;
+	player.x = SCREEN_X_MIDDLE;
+	player.y = SCREEN_BOTTOM_EDGE;
 	player.image[0] = PlayerShip0;
 	player.image[1] = BigExplosion0;
 	player.image[2] = BigExplosion1;
 	player.image[3] = BigExplosion1;
-	player.life = 3;
+	player.life = PLAYER_ALIVE;
 }
 void MovePlayer(unsigned long data){
-	if (player.life == 3){
+	if (player.life == PLAYER_ALIVE){
 		player.x = data; 
 	}
 }
 void DrawPlayer(void){
 	Nokia5110_PrintBMP(player.x, player.y, player.image[3 - player.life], 0);
 	switch (player.life){
-		case 1: 
-			player.life = 4;
+		case PLAYER_EXPLODING_1: 
+			player.life = PLAYER_EXPLODING_2;
 			break;
-		case 2:
-			player.life = 1;
+		case PLAYER_EXPLODING_0:
+			player.life = PLAYER_EXPLODING_1;
 			GameSound_Play("PLAYER_KILLED");
 			break;
-		case 4:
-			player.life = 0;
+		case PLAYER_EXPLODING_2:
+			player.life = PLAYER_DEAD;
 			gameIs = LOST;
 			break;
 		default:
@@ -663,7 +689,7 @@ void DrawPlayerMissile(void){
 	unsigned char i;
 	unsigned char j;
 	if (playerMissile.life == 1){
-		if ((playerMissile.y < (47 - PLAYERH)) && (playerMissile.y > (41 - PLAYERH))){
+		if ((playerMissile.y < (SCREEN_BOTTOM_EDGE - PLAYERH)) && (playerMissile.y > (BUNKERS_Y_POSTION))){
 			if ((bunker[0].life > 0) || (bunker[1].life > 0) || (bunker[2].life > 0)){
 				for (j = 0; j < 3; j++){
 					if (((playerMissile.x > (7 + j * 26)) && (playerMissile.x < (25 + j * 26))) || 
@@ -701,15 +727,15 @@ unsigned char MissileIsCloseToEnemy(void){
 unsigned char CheckMissileHit(unsigned char i, unsigned char j){
 	if (((enemy[i][j].x <= playerMissile.x) && (enemy[i][j].x + ENEMY10W >= playerMissile.x)) || 
 			((enemy[i][j].x <= (playerMissile.x + LASERW)) && (enemy[i][j].x + ENEMY10W >= (playerMissile.x + LASERW)))){
-		if (enemy[i + 1][j].life == 2 && playerMissile.y > enemy[i][j].y){
-			enemy[i + 1][j].life = 1;
+		if (enemy[i + 1][j].life == ENEMY_ALIVE && playerMissile.y > enemy[i][j].y){
+			enemy[i + 1][j].life = ENEMY_EXPLODING;
 			Nokia5110_PrintBMP(playerMissile.x, playerMissile.y, playerMissile.image[1], 0);
 			playerMissile.life = 0;
 			return 1;
 		}
 		else {
-			if ((enemy[i][j].life == 2) && !(playerMissile.y > enemy[i][j].y)){
-				enemy[i][j].life = 1;
+			if ((enemy[i][j].life == ENEMY_ALIVE) && !(playerMissile.y > enemy[i][j].y)){
+				enemy[i][j].life = ENEMY_EXPLODING;
 				Nokia5110_PrintBMP(playerMissile.x, playerMissile.y, playerMissile.image[1], 0);
 				playerMissile.life = 0;
 				return 1;
@@ -721,7 +747,7 @@ unsigned char CheckMissileHit(unsigned char i, unsigned char j){
 void InitBunker(void){unsigned char i;
 	for (i = 0; i < 3; i++){
 		bunker[i].x = 7 + i * 26;
-		bunker[i].y = 47 - PLAYERH;
+		bunker[i].y = SCREEN_BOTTOM_EDGE - PLAYERH;
 		bunker[i].image[0] = Bunker0;
 		bunker[i].image[1] = Bunker1;
 		bunker[i].image[2] = Bunker2;
@@ -761,22 +787,22 @@ void DrawEnemyMissile(void){
 	unsigned char j;
 	for (i = 0; i < 4; i++){
 		if (enemyMissile[i].life == 1){
-			if (enemyMissile[i].y > 47){
+			if (enemyMissile[i].y > SCREEN_BOTTOM_EDGE){
 				enemyMissile[i].life = 0;
 				enemyMissileCount--;
 			}
 			else {
-				if (enemyMissile[i].y > (46 - PLAYERH)){
+				if (enemyMissile[i].y > PLAYER_Y_POSITION){
 					if (((enemyMissile[i].x > playerPos) && (enemyMissile[i].x < playerPos + PLAYERW)) || 
 						 (((enemyMissile[i].x + MISSILEW) > playerPos) && ((enemyMissile[i].x + MISSILEW) < playerPos + PLAYERW))){
 						Nokia5110_PrintBMP(enemyMissile[i].x, enemyMissile[i].y, enemyMissile[i].image[1], 0);
-						player.life = 2;
+						player.life = PLAYER_EXPLODING_0;
 						enemyMissile[i].life = 0;
 						enemyMissileCount--;
 					}
 				}
 				else {
-					if (enemyMissile[i].y > (41 - PLAYERH)){
+					if (enemyMissile[i].y > BUNKERS_Y_POSTION){
 						if (bunker[0].life > 0 || bunker[1].life > 0 || bunker[2].life > 0){
 							for (j = 0; j < 3; j++){
 								if (((enemyMissile[i].x > (7 + j * 26)) && (enemyMissile[i].x < (25 + j * 26))) || 
@@ -806,9 +832,10 @@ void TriggerEnemyAttack(void){
 	if (frameCount == 0x08){
 		enemyAttack = ((Random() >> 5) % 5);
 		for (j = 0; j < 4; j++){
-			if ((enemyAttack == j) && (enemyMissile[j].life == 0) && ((enemy[0][j].life == 2) || (enemy[1][j].life == 2)) && (enemyMissileCount < 1)){
+			if ((enemyAttack == j) && (enemyMissile[j].life == 0) && (enemyMissileCount < 1) &&
+				 ((enemy[0][j].life == ENEMY_ALIVE) || (enemy[1][j].life == ENEMY_ALIVE))){
 				enemyMissile[j].x = enemy[0][j].x + (ENEMY10W / 2);
-				if (enemy[1][j].life == 2)
+				if (enemy[1][j].life == ENEMY_ALIVE)
 					enemyMissile[j].y = enemy[1][j].y + ENEMY10H;
 				else {
 					enemyMissile[j].y = enemy[0][j].y + ENEMY10H;
@@ -823,8 +850,8 @@ void TriggerEnemyAttack(void){
 }
 void UpdateScreen(void){
 	Nokia5110_DisplayBuffer();
-	if (pause == 1) DisplayScore();
-	semaphore = 0;
+	if (pauseIsOn == 1) DisplayScore();
+	triggerScreenUpdate = 0;
 }
 void ResetGame(void){
 	Nokia5110_ClearBuffer();
@@ -846,7 +873,7 @@ void ResetScore(void){
 	score = 0;
 }
 void InitPause(void){
-	pause = 0;
+	pauseIsOn = 0;
 }
 void DisplayScore(void){
 	Nokia5110_SetCursor(1, 1);
